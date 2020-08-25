@@ -59,7 +59,7 @@ max_due_date.appendChild(max_due_date_input);
 var release_date_left = document.createElement("div");
 
 var release_date_left_title = document.createElement("p");
-var release_date_left_title_text = document.createTextNode("Release date");
+var release_date_left_title_text = document.createTextNode("Minimum due date");
 release_date_left_title.appendChild(release_date_left_title_text);
 release_date_left_title.className = HEADING_CLASS;
 
@@ -97,19 +97,36 @@ schedule_button.appendChild(schedule_button_div);
 schedule_button.className = BUTTON_CLASS;
 schedule_button.addEventListener("click", function () {
   console.log(release_date_left_input.value);
+  var arr = [];
   labels.forEach(lbl => {
+    arr.push(document.getElementById(lbl).value);
     console.log(lbl + document.getElementById(lbl).value);
   })
+  console.log(arr);
   console.log(max_due_date_input.value);
   console.log(release_date_left_input.value);
   console.log(s_date_left_input.value);
   console.log(course_name);
+  var min_due_date = release_date_left_input.value;
+  var max_due_date = max_due_date_input.value;
   const Http = new XMLHttpRequest();
+  let base_url = "https://deadline-scheduling-suggestion.herokuapp.com/iiitd/course 1/get_suggestions/";
+  base_url = base_url+arr[0]+'-'+arr[1]+'-0/'+max_due_date+'T00:00:00.000Z/'+min_due_date+'T00:00:00.000Z';
+  console.log(base_url);
   const url='https://deadline-scheduling-suggestion.herokuapp.com/iiitd/course 1/get_suggestions/5-0-0/2020-09-01T17:00:00.000Z/2020-09-20T17:00:00.000Z';
-  Http.open("GET", url);
+  Http.open("GET", base_url);
   Http.send();
+  var response;
   Http.onreadystatechange = (e) => {
-    console.log(Http.responseText);
+    response = Http.responseText;
+    var res = JSON.parse(response);
+    var suggestions = res["suggestions"];
+    var flexi_suggestions = res["flexi_suggestions"];
+    //console.log(res);
+    //console.log(response);
+    //console.log(suggestions);
+    //console.log(flexi_suggestions);
+    
   }
 });
 
