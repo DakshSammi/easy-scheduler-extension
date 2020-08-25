@@ -5,7 +5,7 @@
 	"manifest_version": 2,
 	"content_scripts": [
 	    {
-	      "matches": ["https://classroom.google.com/u/*/w/*/t/all"],
+	      "matches": ["https://classroom.google.com/*"],
 	      "js": ["add_schedule_button.js"],
 	      "css": ["style.css"]
 	    }
