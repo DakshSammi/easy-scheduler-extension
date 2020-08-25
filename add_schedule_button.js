@@ -101,9 +101,17 @@ schedule_button.addEventListener("click", function () {
     console.log(lbl + document.getElementById(lbl).value);
   })
   console.log(max_due_date_input.value);
-  console.log(release_date_input.value);
+  console.log(release_date_left_input.value);
   console.log(s_date_left_input.value);
-})
+  console.log(course_name);
+  const Http = new XMLHttpRequest();
+  const url='https://deadline-scheduling-suggestion.herokuapp.com/iiitd/course 1/get_suggestions/5-0-0/2020-09-01T17:00:00.000Z/2020-09-20T17:00:00.000Z';
+  Http.open("GET", url);
+  Http.send();
+  Http.onreadystatechange = (e) => {
+    console.log(Http.responseText);
+  }
+});
 
 //drop down for suggestions
 var drop_down = document.createElement('div');
@@ -130,24 +138,79 @@ list_item3.appendChild(list_item3_text);
 drop_down_content.appendChild(list_item3);
 button.className = BUTTON_CLASS;
 
+//course name input
+// var course_name = document.createElement("div");
+// var course_name_title = document.createElement("p");
+// var course_name_title_text = document.createTextNode("Enter your course name");
+// course_name_title.appendChild(course_name_title_text);
+// course_name_title.className = HEADING_CLASS;
+// var course_name_input = document.createElement("input");
+// course_name_input.className = "input";
+// course_name_input.type = "text";
+// course_name.appendChild(course_name_title);
+// course_name.appendChild(course_name_input);
+
+//checkbox begins
+var check_box = document.createElement('div');
+var check_box_input = document.createElement('input');
+var check_box_label = document.createElement('label');
+check_box.appendChild(check_box_input);
+check_box.appendChild(check_box_label);
+check_box_input.setAttribute('type', 'checkbox');
+check_box.setAttribute('id', 'check');
+check_box.setAttribute('name', 'check');
+check_box_label.setAttribute('for', 'check');
+var check_box_label_text = document.createTextNode('Suggestions with flexible duration');
+check_box_label.appendChild(check_box_label_text);
+
+//drop down for suggestions
+var drop_down_flexible = document.createElement('div');
+drop_down_flexible.className = 'dropdown';
+var button_flexible = document.createElement('button');
+button_flexible.className = 'dropbtn';
+var btntext_flexible = document.createTextNode('Flexible duration suggestions');
+button_flexible.appendChild(btntext_flexible);
+drop_down_flexible.appendChild(button_flexible);
+var drop_down_content_flexible = document.createElement('div');
+drop_down_content_flexible.className = 'dropdown-content';
+drop_down_flexible.appendChild(drop_down_content_flexible);
+var list_item1_flexible = document.createElement('span');
+var list_item1_text_flexible = document.createTextNode('1) dd/mm/yyyy');
+list_item1_flexible.appendChild(list_item1_text_flexible);
+drop_down_content_flexible.appendChild(list_item1_flexible);
+var list_item2_flexible = document.createElement('span');
+var list_item2_text_flexible = document.createTextNode('2) dd/mm/yyyy');
+list_item2_flexible.appendChild(list_item2_text_flexible);
+drop_down_content_flexible.appendChild(list_item2_flexible);
+var list_item3_flexible = document.createElement('span');
+var list_item3_text_flexible = document.createTextNode('3) dd/mm/yyyy');
+list_item3_flexible.appendChild(list_item3_text_flexible);
+drop_down_content_flexible.appendChild(list_item3_flexible);
+button_flexible.className = BUTTON_CLASS;
+
+var course_name;
 
 let observer = new MutationObserver((mutations) => {
   mutations.forEach((mutation) => {
     if (!mutation.addedNodes) return;
     observer.disconnect();
     for (let i = 0; i < mutation.addedNodes.length; i++) {
-      // do things to your newly added nodes here
       let node = mutation.addedNodes[i];
+      if (node.className == 'tNGpbb uTUgB YVvGBb') {
+        course_name = node.textContent;
+      }
       if (node.className == HEADING_CLASS && node.childNodes[0].data == "Due") {
         head = node;
         setTimeout(() => {
           let parent = node.parentNode;
+          //parent.insertBefore(course_name, node);
           parent.insertBefore(duration_div, node);
           parent.insertBefore(max_due_date, node);
           parent.insertBefore(release_date_left, node);
-          //parent.insertBefore(s_date_left, node);
-          parent.insertBefore(drop_down, node);
+          parent.insertBefore(check_box, node);
           parent.insertBefore(schedule_button, node);
+          parent.insertBefore(drop_down, node);
+          parent.insertBefore(drop_down_flexible, node);
         }, 300);
       }
     }
@@ -167,3 +230,5 @@ observer.observe(document.body, {
   attributes: true,
   characterData: true,
 });
+
+var req = 'https://deadline-scheduling-suggestion.herokuapp.com/iiitd/course 1/get_suggestions/5-0-0/2020-09-01T17:00:00.000Z/2020-09-20T17:00:00.000Z'
