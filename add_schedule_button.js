@@ -117,7 +117,7 @@ schedule_button.addEventListener("click", function () {
   var max_due_date = max_due_date_input.value;
   //const Http = new XMLHttpRequest();
   let base_url = "https://deadline-scheduling-suggestion.herokuapp.com/iiitd/course 1/get_suggestions/";
-  base_url = base_url+arr[0]+'-'+arr[1]+'-0/'+max_due_date+'T00:00:00.000Z/'+min_due_date+'T00:00:00.000Z';
+  base_url = base_url+arr[0]+'-'+arr[1]+'-0/'+min_due_date+'T00:00:00.000Z/'+max_due_date+'T00:00:00.000Z';
   console.log(base_url);
   const url='https://deadline-scheduling-suggestion.herokuapp.com/iiitd/course 1/get_suggestions/5-0-0/2020-09-01T17:00:00.000Z/2020-09-20T17:00:00.000Z';
   
@@ -248,8 +248,8 @@ let observer = new MutationObserver((mutations) => {
           let parent = node.parentNode;
           //parent.insertBefore(course_name, node);
           parent.insertBefore(duration_div, node);
-          parent.insertBefore(max_due_date, node);
           parent.insertBefore(release_date_left, node);
+          parent.insertBefore(max_due_date, node);
           parent.insertBefore(check_box, node);
           parent.insertBefore(schedule_button, node);
           parent.insertBefore(drop_down, node);
