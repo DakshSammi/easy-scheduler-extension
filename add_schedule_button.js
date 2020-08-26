@@ -114,20 +114,60 @@ schedule_button.addEventListener("click", function () {
   base_url = base_url+arr[0]+'-'+arr[1]+'-0/'+max_due_date+'T00:00:00.000Z/'+min_due_date+'T00:00:00.000Z';
   console.log(base_url);
   const url='https://deadline-scheduling-suggestion.herokuapp.com/iiitd/course 1/get_suggestions/5-0-0/2020-09-01T17:00:00.000Z/2020-09-20T17:00:00.000Z';
-  Http.open("GET", base_url);
-  Http.send();
-  var response;
-  Http.onreadystatechange = (e) => {
-    response = Http.responseText;
-    var res = JSON.parse(response);
+  // Http.open("GET", base_url);
+  // Http.send();
+  // var response;
+  // Http.onreadystatechange = (e) => {
+  //   response = Http.responseText;
+  //   var res = JSON.parse(response);
+  //   var suggestions = res["suggestions"];
+  //   var flexi_suggestions = res["flexi_suggestions"];
+  //   //console.log(res);
+  //   //console.log(response);
+  //   //console.log(suggestions);
+  //   //console.log(flexi_suggestions);
+  //   for (let i in suggestions) {
+  //     var list_item = document.createElement('span');
+  //     var suggestions_object = suggestions[i];
+  //     var start_date = suggestions_object["start_date"].substring(0, 10);
+  //     var list_item_text = document.createTextNode(start_date);
+  //     list_item.appendChild(list_item_text);
+  //     drop_down_content.appendChild(list_item);
+  //   }
+  // }
+  const fetchPromise = fetch(base_url);
+  fetchPromise.then((response) => {
+    return response.json();    
+  }).then((res) => {
     var suggestions = res["suggestions"];
     var flexi_suggestions = res["flexi_suggestions"];
     //console.log(res);
-    //console.log(response);
-    //console.log(suggestions);
-    //console.log(flexi_suggestions);
-    
-  }
+    console.log(res);
+    console.log(suggestions);
+    console.log(flexi_suggestions);
+    for (let i in suggestions) {
+      var list_item = document.createElement('span');
+      var suggestions_object = suggestions[i];
+      var start_date = suggestions_object["start_date"].substring(0, 10);
+      var number = parseInt(i)+1;
+      var start_date_text = number + ') ' + start_date;
+      var list_item_text = document.createTextNode(start_date_text);
+      list_item.appendChild(list_item_text);
+      drop_down_content.appendChild(list_item);
+    }
+    if (check_box_input.checked) {
+      for (let i in flexi_suggestions) {
+        var flexi_list_item = document.createElement('span');
+        var flexi_suggestions_object = flexi_suggestions[i];
+        var flexi_start_date = flexi_suggestions_object["start_date"].substring(0, 10);
+        var flexi_number = parseInt(i)+1;
+        var flexi_start_date_text = flexi_number + ') ' + flexi_start_date;
+        var flexi_list_item_text = document.createTextNode(flexi_start_date_text);
+        flexi_list_item.appendChild(flexi_list_item_text);
+        drop_down_content_flexible.appendChild(flexi_list_item);
+      }
+    }
+  })
 });
 
 //drop down for suggestions
@@ -144,15 +184,15 @@ drop_down.appendChild(drop_down_content);
 var list_item1 = document.createElement('span');
 var list_item1_text = document.createTextNode('1) dd/mm/yyyy');
 list_item1.appendChild(list_item1_text);
-drop_down_content.appendChild(list_item1);
+//drop_down_content.appendChild(list_item1);
 var list_item2 = document.createElement('span');
 var list_item2_text = document.createTextNode('2) dd/mm/yyyy');
 list_item2.appendChild(list_item2_text);
-drop_down_content.appendChild(list_item2);
+//drop_down_content.appendChild(list_item2);
 var list_item3 = document.createElement('span');
 var list_item3_text = document.createTextNode('3) dd/mm/yyyy');
 list_item3.appendChild(list_item3_text);
-drop_down_content.appendChild(list_item3);
+//drop_down_content.appendChild(list_item3);
 button.className = BUTTON_CLASS;
 
 //course name input
@@ -194,15 +234,15 @@ drop_down_flexible.appendChild(drop_down_content_flexible);
 var list_item1_flexible = document.createElement('span');
 var list_item1_text_flexible = document.createTextNode('1) dd/mm/yyyy');
 list_item1_flexible.appendChild(list_item1_text_flexible);
-drop_down_content_flexible.appendChild(list_item1_flexible);
+//drop_down_content_flexible.appendChild(list_item1_flexible);
 var list_item2_flexible = document.createElement('span');
 var list_item2_text_flexible = document.createTextNode('2) dd/mm/yyyy');
 list_item2_flexible.appendChild(list_item2_text_flexible);
-drop_down_content_flexible.appendChild(list_item2_flexible);
+//drop_down_content_flexible.appendChild(list_item2_flexible);
 var list_item3_flexible = document.createElement('span');
 var list_item3_text_flexible = document.createTextNode('3) dd/mm/yyyy');
 list_item3_flexible.appendChild(list_item3_text_flexible);
-drop_down_content_flexible.appendChild(list_item3_flexible);
+//drop_down_content_flexible.appendChild(list_item3_flexible);
 button_flexible.className = BUTTON_CLASS;
 
 var course_name;
