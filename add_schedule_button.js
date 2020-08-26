@@ -96,6 +96,12 @@ schedule_button_div.appendChild(schedule_button_text);
 schedule_button.appendChild(schedule_button_div);
 schedule_button.className = BUTTON_CLASS;
 schedule_button.addEventListener("click", function () {
+  while (drop_down_content.firstChild) {
+    drop_down_content.removeChild(drop_down_content.firstChild);
+  }
+  while (drop_down_content_flexible.firstChild) {
+    drop_down_content_flexible.removeChild(drop_down_content_flexible.firstChild);
+  }
   console.log(release_date_left_input.value);
   var arr = [];
   labels.forEach(lbl => {
@@ -109,32 +115,12 @@ schedule_button.addEventListener("click", function () {
   console.log(course_name);
   var min_due_date = release_date_left_input.value;
   var max_due_date = max_due_date_input.value;
-  const Http = new XMLHttpRequest();
+  //const Http = new XMLHttpRequest();
   let base_url = "https://deadline-scheduling-suggestion.herokuapp.com/iiitd/course 1/get_suggestions/";
   base_url = base_url+arr[0]+'-'+arr[1]+'-0/'+max_due_date+'T00:00:00.000Z/'+min_due_date+'T00:00:00.000Z';
   console.log(base_url);
   const url='https://deadline-scheduling-suggestion.herokuapp.com/iiitd/course 1/get_suggestions/5-0-0/2020-09-01T17:00:00.000Z/2020-09-20T17:00:00.000Z';
-  // Http.open("GET", base_url);
-  // Http.send();
-  // var response;
-  // Http.onreadystatechange = (e) => {
-  //   response = Http.responseText;
-  //   var res = JSON.parse(response);
-  //   var suggestions = res["suggestions"];
-  //   var flexi_suggestions = res["flexi_suggestions"];
-  //   //console.log(res);
-  //   //console.log(response);
-  //   //console.log(suggestions);
-  //   //console.log(flexi_suggestions);
-  //   for (let i in suggestions) {
-  //     var list_item = document.createElement('span');
-  //     var suggestions_object = suggestions[i];
-  //     var start_date = suggestions_object["start_date"].substring(0, 10);
-  //     var list_item_text = document.createTextNode(start_date);
-  //     list_item.appendChild(list_item_text);
-  //     drop_down_content.appendChild(list_item);
-  //   }
-  // }
+  
   const fetchPromise = fetch(base_url);
   fetchPromise.then((response) => {
     return response.json();    
