@@ -12,8 +12,13 @@
 	margin: 10px 10px 10px 10px;
 }
 
-.block {
-	margin: 10px 0px 10px 0px;
+.vertical {
+	width: 100%;
+	margin-top: 20px;
+}
+
+.buttonHeight {
+	height: 40px;
 }
 
 .icon {

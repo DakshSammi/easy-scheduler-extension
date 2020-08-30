@@ -1,4 +1,4 @@
-const BUTTON_CLASS = "U26fgb cd29Sd p0oLxb BEAGS CG2qQ QRiHXd bVp04e block";
+const BUTTON_CLASS = "U26fgb cd29Sd p0oLxb BEAGS CG2qQ QRiHXd bVp04e";
 const HEADING_CLASS = "gtuckc tLDEHd-Wvd9Cc";
 
 // duration
@@ -88,15 +88,20 @@ flexi_suggestions_label.setAttribute('for', 'check');
 var flexi_suggestions_label_text = document.createTextNode('Suggestions with flexible duration');
 flexi_suggestions_label.appendChild(flexi_suggestions_label_text);
 
+// get suggestions
 var get_suggestions = document.createElement("div");
+get_suggestions.className = "vertical buttonHeight";
+
+var get_suggestions_button = document.createElement("div");
+get_suggestions_button.className = BUTTON_CLASS;
+
 var get_suggestions_div = document.createElement("div");
 get_suggestions_div.className = "GcVcmc Fxmcue cd29Sd";
 var get_suggestions_text = document.createTextNode("Get Suggestions");
 
 get_suggestions_div.appendChild(get_suggestions_text);
-get_suggestions.appendChild(get_suggestions_div);
-get_suggestions.className = BUTTON_CLASS;
-
+get_suggestions_button.appendChild(get_suggestions_div);
+get_suggestions.appendChild(get_suggestions_button);
 
 // popup
 var popup = document.createElement("div");
@@ -118,27 +123,39 @@ popup.appendChild(popup_content);
 
 // open popup on click
 var open_suggestions_popup = document.createElement("div");
+open_suggestions_popup.className = 'vertical buttonHeight'
+
+var open_suggestions_popup_button = document.createElement("div");
+open_suggestions_popup_button.className = BUTTON_CLASS;
+
 var open_suggestions_popup_div = document.createElement("div");
 open_suggestions_popup_div.className = "GcVcmc Fxmcue cd29Sd";
 var open_suggestions_popup_text = document.createTextNode("Get Due Date Suggestions");
 
 open_suggestions_popup_div.appendChild(open_suggestions_popup_text);
-open_suggestions_popup.appendChild(open_suggestions_popup_div);
-open_suggestions_popup.className = BUTTON_CLASS;
-open_suggestions_popup.addEventListener("click", () => {
+open_suggestions_popup_button.appendChild(open_suggestions_popup_div);
+open_suggestions_popup_button.addEventListener("click", () => {
   popup.style.display = "block"
 });
+open_suggestions_popup.appendChild(open_suggestions_popup_button);
 
 // close popup on click
 var close_popup = document.createElement("div");
+close_popup.className = "vertical buttonHeight";
+
+var close_popup_button = document.createElement("div");
+close_popup_button.className = BUTTON_CLASS;
+
 var close_popup_div = document.createElement("div");
 close_popup_div.className = "GcVcmc Fxmcue cd29Sd";
+
 var close_popup_text = document.createTextNode("Close");
 
 close_popup_div.appendChild(close_popup_text);
-close_popup.appendChild(close_popup_div);
-close_popup.className = BUTTON_CLASS;
-close_popup.addEventListener("click", () => {
+close_popup_button.appendChild(close_popup_div);
+close_popup.appendChild(close_popup_button);
+close_popup_button.addEventListener("click", () => {
   popup.style.display = "none"
 });
+
 popup_content.appendChild(close_popup);
