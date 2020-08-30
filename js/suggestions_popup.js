@@ -96,7 +96,7 @@ var get_suggestions_button = document.createElement("div");
 get_suggestions_button.className = BUTTON_CLASS;
 
 var get_suggestions_div = document.createElement("div");
-get_suggestions_div.className = "GcVcmc Fxmcue cd29Sd";
+get_suggestions_div.className = "GcVcmc Fxmcue cd29Sd get_suggestions_button";
 var get_suggestions_text = document.createTextNode("Get Suggestions");
 
 get_suggestions_div.appendChild(get_suggestions_text);
@@ -113,10 +113,20 @@ popup_content.className = "modal-content";
 var popup_span = document.createElement("span");
 popup_span.className = "close";
 
+//reasons for the chosen date
+var reasons_div = document.createElement("div");
+reasons_div.className = "block reasons";
+var reasons_title = document.createElement("p");
+var reasons_title_text = document.createTextNode("");
+reasons_div.appendChild(reasons_title);
+reasons_title.appendChild(reasons_title_text);
+reasons_title.className = HEADING_CLASS;
+
+
 popup_content.appendChild(popup_span);
 popup_content.appendChild(duration_div);
-popup_content.appendChild(max_due_date);
 popup_content.appendChild(min_due_date);
+popup_content.appendChild(max_due_date);
 popup_content.appendChild(flexi_suggestions);
 popup_content.appendChild(get_suggestions);
 popup.appendChild(popup_content);
@@ -159,3 +169,162 @@ close_popup_button.addEventListener("click", () => {
 });
 
 popup_content.appendChild(close_popup);
+popup_content.appendChild(reasons_div);
+
+var drop_down_container = document.createElement('div');
+drop_down_container.className = 'drop_down_container';
+
+//dropdown for fixed suggestions
+var drop_down = document.createElement('div');
+drop_down.className = 'dropdown fixed';
+var button = document.createElement('button');
+button.className = 'dropbtn';
+var btntext = document.createTextNode('Fixed Duration Suggestions');
+button.appendChild(btntext);
+drop_down.appendChild(button);
+var drop_down_content = document.createElement('div');
+drop_down_content.className = 'dropdown-content';
+drop_down.appendChild(drop_down_content);
+var list_item1 = document.createElement('span');
+var list_item1_text = document.createTextNode('1) dd/mm/yyyy');
+list_item1.appendChild(list_item1_text);
+//drop_down_content.appendChild(list_item1);
+var list_item2 = document.createElement('span');
+var list_item2_text = document.createTextNode('2) dd/mm/yyyy');
+list_item2.appendChild(list_item2_text);
+//drop_down_content.appendChild(list_item2);
+var list_item3 = document.createElement('span');
+var list_item3_text = document.createTextNode('3) dd/mm/yyyy');
+list_item3.appendChild(list_item3_text);
+//drop_down_content.appendChild(list_item3);
+button.className = BUTTON_CLASS;
+//popup_content.appendChild(drop_down);
+
+//drop down for flexible suggestions
+var drop_down_flexible = document.createElement('div');
+drop_down_flexible.className = 'dropdown';
+var button_flexible = document.createElement('button');
+button_flexible.className = 'dropbtn';
+var btntext_flexible = document.createTextNode('Flexible duration suggestions');
+button_flexible.appendChild(btntext_flexible);
+drop_down_flexible.appendChild(button_flexible);
+var drop_down_content_flexible = document.createElement('div');
+drop_down_content_flexible.className = 'dropdown-content';
+drop_down_flexible.appendChild(drop_down_content_flexible);
+var list_item1_flexible = document.createElement('span');
+var list_item1_text_flexible = document.createTextNode('1) dd/mm/yyyy');
+list_item1_flexible.appendChild(list_item1_text_flexible);
+//drop_down_content_flexible.appendChild(list_item1_flexible);
+var list_item2_flexible = document.createElement('span');
+var list_item2_text_flexible = document.createTextNode('2) dd/mm/yyyy');
+list_item2_flexible.appendChild(list_item2_text_flexible);
+//drop_down_content_flexible.appendChild(list_item2_flexible);
+var list_item3_flexible = document.createElement('span');
+var list_item3_text_flexible = document.createTextNode('3) dd/mm/yyyy');
+list_item3_flexible.appendChild(list_item3_text_flexible);
+//drop_down_content_flexible.appendChild(list_item3_flexible);
+button_flexible.className = BUTTON_CLASS;
+//popup_content.appendChild(drop_down);
+
+drop_down_container.appendChild(drop_down);
+drop_down_container.appendChild(drop_down_flexible);
+popup_content.appendChild(drop_down_container);
+
+//fetch the data on clicking the button
+get_suggestions_button.addEventListener('click', function() {
+  while (drop_down_content.firstChild) {
+    drop_down_content.removeChild(drop_down_content.firstChild);
+  }
+  while (drop_down_content_flexible.firstChild) {
+    drop_down_content_flexible.removeChild(drop_down_content_flexible.firstChild);
+  }
+  var arr = [];
+  labels.forEach(lbl => {
+    arr.push(document.getElementById(lbl).value);
+    console.log(lbl + document.getElementById(lbl).value);
+  })
+  console.log(arr);
+  console.log(min_due_date_input.value);
+  console.log(max_due_date_input.value);
+  let base_url = "https://deadline-scheduling-suggestion.herokuapp.com/iiitd/course 1/get_suggestions/";
+  var min_date = min_due_date_input.value;
+  var max_date = max_due_date_input.value;
+  base_url = base_url+arr[0]+'-'+arr[1]+'-0/'+min_date+'T00:00:00.000Z/'+max_date+'T00:00:00.000Z';
+  const fetchPromise = fetch(base_url);
+  fetchPromise.then((response) => {
+    return response.json();    
+  }).then((res) => {
+    var suggestions = res["suggestions"];
+    var flexi_suggestions = res["flexi_suggestions"];
+    //console.log(res);
+    console.log(res);
+    console.log(suggestions);
+    console.log(flexi_suggestions);
+    for (let i in suggestions) {
+      var list_item = document.createElement('span');
+      var suggestions_object = suggestions[i];
+      var start_date = suggestions_object["start_date"].substring(0, 10);
+      var end_date = suggestions_object["end_date"].substring(0, 10);
+      var number = parseInt(i)+1;
+      var start_date_text = number + ') ' + start_date + ' - ' + end_date;
+      var list_item_text = document.createTextNode(start_date_text);
+      list_item.appendChild(list_item_text);
+      list_item.addEventListener('click', function() {
+        console.log(list_item.innerHTML);
+        var start_date_chosen = list_item.innerHTML.substring(3,13);
+        var rank = list_item.innerHTML.substring(0,1);
+        for (var j in suggestions) {
+          if (start_date_chosen == suggestions[j]["start_date"].substring(0,10)) {
+            var reason = suggestions[j]["clash"]["reason"];
+            var score = suggestions[j]["clash"]["score"];
+            console.log("reason = "+reason);
+            console.log("score = "+score);
+            if (rank == '1') {
+              reasons_title.className = 'good_decision';
+              reasons_title_text = document.createTextNode("This is the best decision");
+            } else {
+              reasons_title.className = 'bad_decision';
+              reasons_title_text = document.createTextNode("This is not the best decision");
+            }
+            popup_content.appendChild(reasons_div);
+          }
+        }
+      })
+      drop_down_content.appendChild(list_item);
+    }
+    if (flexi_suggestions_input.checked) {
+      for (let i in flexi_suggestions) {
+        var flexi_list_item = document.createElement('span');
+        var flexi_suggestions_object = flexi_suggestions[i];
+        var flexi_start_date = flexi_suggestions_object["start_date"].substring(0, 10);
+        var flexi_end_date = flexi_suggestions_object["end_date"].substring(0, 10);
+        var flexi_number = parseInt(i)+1;
+        var flexi_start_date_text = flexi_number + ') ' + flexi_start_date + ' - ' + flexi_end_date;
+        var flexi_list_item_text = document.createTextNode(flexi_start_date_text);
+        flexi_list_item.appendChild(flexi_list_item_text);
+        flexi_list_item.addEventListener('click', function() {
+          console.log(flexi_list_item.innerHTML);
+          var start_date_chosen = flexi_list_item.innerHTML.substring(3,13);
+          var rank = flexi_list_item.innerHTML.substring(0,1);
+          for (var j in flexi_suggestions) {
+            if (start_date_chosen == flexi_suggestions[j]["start_date"].substring(0,10)) {
+              var reason = flexi_suggestions[j]["clash"]["reason"];
+              var score = flexi_suggestions[j]["clash"]["score"];
+              console.log("reason = "+reason);
+              console.log("score = "+score);
+              if (rank == '1') {
+                reasons_title.className = 'good_decision';
+                reasons_title_text.innerHTML = "This is the best decision";
+              } else {
+                reasons_title.className = 'bad_decision';
+                reasons_title_text.innerHTML = "This is not the best decision";
+              }
+              popup_content.appendChild(reasons_div);
+            }
+          }
+        })
+        drop_down_content_flexible.appendChild(flexi_list_item);
+      }
+    }
+  });
+});
