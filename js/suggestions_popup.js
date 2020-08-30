@@ -139,6 +139,8 @@ var open_suggestions_popup_text = document.createTextNode("Get Due Date Suggesti
 open_suggestions_popup_div.appendChild(open_suggestions_popup_text);
 open_suggestions_popup_button.appendChild(open_suggestions_popup_div);
 open_suggestions_popup_button.addEventListener("click", () => {
+  if(all_suggestions.childNodes.length > 0) all_suggestions.removeChild(all_suggestions.childNodes[0]);
+  if(all_suggestions.childNodes.length > 0) all_suggestions.removeChild(all_suggestions.childNodes[0]);
   popup.style.display = "block"
 });
 open_suggestions_popup.appendChild(open_suggestions_popup_button);
