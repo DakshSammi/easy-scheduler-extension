@@ -6,8 +6,8 @@
 	"content_scripts": [
 	    {
 	      "matches": ["https://classroom.google.com/*"],
-	      "js": ["add_schedule_button.js"],
-	      "css": ["style.css"]
+	      "js": ["js/suggestions_popup.js", "js/main.js"],
+	      "css": ["css/style.css", "css/popup.css"]
 	    }
 	  ]
 }
