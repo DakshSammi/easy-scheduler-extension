@@ -102,6 +102,9 @@ var get_suggestions_text = document.createTextNode("Get Suggestions");
 get_suggestions_div.appendChild(get_suggestions_text);
 get_suggestions_button.appendChild(get_suggestions_div);
 get_suggestions.appendChild(get_suggestions_button);
+get_suggestions.addEventListener("click", fetchSuggestions);
+
+var all_suggestions = document.createElement('div');
 
 // popup
 var popup = document.createElement("div");
@@ -119,6 +122,7 @@ popup_content.appendChild(max_due_date);
 popup_content.appendChild(min_due_date);
 popup_content.appendChild(flexi_suggestions);
 popup_content.appendChild(get_suggestions);
+popup_content.appendChild(all_suggestions);
 popup.appendChild(popup_content);
 
 // open popup on click
