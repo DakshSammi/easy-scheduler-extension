@@ -1,4 +1,4 @@
-var course_name = 'course 1';
+var course_name = null;
 
 let observer = new MutationObserver((mutations) => {
 	mutations.forEach((mutation) => {
@@ -14,6 +14,19 @@ let observer = new MutationObserver((mutations) => {
 				parent.insertBefore(open_suggestions_popup, node);
 				parent.insertBefore(popup, node);
 			}
+			if(node.id == 'UGb2Qe') {
+				course_name = node.childNodes[0].data;
+				console.log(course_name);
+				let check_student_schedule = `https://deadline-scheduling-suggestion.herokuapp.com/iiitd/${course_name}/student_schedule/week`;
+				fetch(check_student_schedule).then(async (response) => {
+					const score = await response.json();
+					console.log(score);
+					if(score.score == 0) {
+						var settings = document.getElementsByClassName('fB7J9c kWv2Xb QRiHXd')[0];
+						settings.parentNode.insertBefore(alert_bell_div, settings);		
+					}
+				})
+			}
 		}
 	});
 });
@@ -24,13 +37,3 @@ observer.observe(document.body, {
 	attributes: true,
 	characterData: true,
 });
-
-let check_student_schedule = `https://deadline-scheduling-suggestion.herokuapp.com/iiitd/${course_name}/student_schedule/week`;
-fetch(check_student_schedule).then(async (response) => {
-	const score = await response.json();
-	console.log(score);
-	if(score.score == 0) {
-		var settings = document.getElementsByClassName('fB7J9c kWv2Xb QRiHXd')[0];
-		settings.parentNode.insertBefore(alert_bell_div, settings);		
-	}
-})
