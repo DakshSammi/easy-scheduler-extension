@@ -6,17 +6,16 @@ get_suggestions.addEventListener("click", function () {
 		suggestions_dropdown_flexible.removeChild(suggestions_dropdown_flexible.firstChild);
 	}
 
-	var arr = [];
+	var duration = [];
 	labels.forEach(lbl => {
-		arr.push(document.getElementById(lbl).value);
+		duration.push(document.getElementById(lbl).value);
 		console.log(lbl + document.getElementById(lbl).value);
 	})
 
 	var min_due_date = min_due_date_input.value;
 	var max_due_date = max_due_date_input.value;
 
-	let base_url = "https://deadline-scheduling-suggestion.herokuapp.com/iiitd/course 1/get_suggestions/";
-	base_url = base_url+arr[0]+'-'+arr[1]+'-0/'+min_due_date+'T00:00:00.000Z/'+max_due_date+'T00:00:00.000Z';
+	let base_url = `https://deadline-scheduling-suggestion.herokuapp.com/iiitd/${course_name}/get_suggestions/${duration[0]}-${duration[1]}-0/${min_due_date}T00:00:00.000Z/${max_due_date}T00:00:00.000Z`;
 	console.log(base_url);
 
 	const fetchPromise = fetch(base_url);

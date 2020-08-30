@@ -7,13 +7,22 @@
 }
 
 .horizontal {
-  display: inline-block;
-  flex: 100%;
-  margin: 10px 10px 10px 10px;
+	display: inline-block;
+	flex: 100%;
+	margin: 10px 10px 10px 10px;
 }
 
 .block {
 	margin: 10px 0px 10px 0px;
+}
+
+.icon {
+	height: 50px;
+	width: 50px;
+}
+
+.rightMargin {
+	margin-right: 20px;
 }
 
 .dropbtn {

@@ -1,4 +1,4 @@
-var course_name;
+var course_name = 'course 1';
 
 let observer = new MutationObserver((mutations) => {
 	mutations.forEach((mutation) => {
@@ -10,7 +10,6 @@ let observer = new MutationObserver((mutations) => {
 				course_name = node.textContent;
 			}
 			if (node.className == HEADING_CLASS && node.childNodes[0].data == "Due") {
-				head = node;
 				let parent = node.parentNode;
 				parent.insertBefore(open_suggestions_popup, node);
 				parent.insertBefore(popup, node);
@@ -25,3 +24,13 @@ observer.observe(document.body, {
 	attributes: true,
 	characterData: true,
 });
+
+let check_student_schedule = `https://deadline-scheduling-suggestion.herokuapp.com/iiitd/${course_name}/student_schedule/week`;
+fetch(check_student_schedule).then(async (response) => {
+	const score = await response.json();
+	console.log(score);
+	if(score.score == 0) {
+		var settings = document.getElementsByClassName('fB7J9c kWv2Xb QRiHXd')[0];
+		settings.parentNode.insertBefore(alert_bell_div, settings);		
+	}
+})
