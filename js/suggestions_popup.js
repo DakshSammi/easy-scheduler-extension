@@ -96,7 +96,7 @@ var get_suggestions_button = document.createElement("div");
 get_suggestions_button.className = BUTTON_CLASS;
 
 var get_suggestions_div = document.createElement("div");
-get_suggestions_div.className = "GcVcmc Fxmcue cd29Sd get_suggestions_button";
+get_suggestions_div.className = "GcVcmc Fxmcue cd29Sd";
 var get_suggestions_text = document.createTextNode("Get Suggestions");
 
 get_suggestions_div.appendChild(get_suggestions_text);
@@ -115,16 +115,6 @@ popup_content.className = "modal-content";
 
 var popup_span = document.createElement("span");
 popup_span.className = "close";
-
-//reasons for the chosen date
-var reasons_div = document.createElement("div");
-reasons_div.className = "block reasons";
-var reasons_title = document.createElement("p");
-var reasons_title_text = document.createTextNode("");
-reasons_div.appendChild(reasons_title);
-reasons_title.appendChild(reasons_title_text);
-reasons_title.className = HEADING_CLASS;
-
 
 popup_content.appendChild(popup_span);
 popup_content.appendChild(duration_div);
