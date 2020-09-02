@@ -23,7 +23,7 @@ function createSuggestion(suggestion) {
 
 	var suggestion_date_text_div = document.createElement('div');
 	suggestion_date_text_div.className = HEADING_CLASS + ' suggestionDate'
-	var suggestion_date_text = document.createTextNode(`Release on ${suggestion.start_date.substring(0, 10)} and Due on ${suggestion.end_date.substring(0, 10)} | Clash: ${suggestion.clash.score.toFixed(2)}`);
+	var suggestion_date_text = document.createTextNode(`${('0' + (new Date(suggestion.start_date)).getDate()).substring(0, 2)}/${('0' + (new Date(suggestion.start_date)).getMonth()).substring(0, 2)} to ${('0' + (new Date(suggestion.end_date)).getDate()).substring(0, 2)}/${('0' + (new Date(suggestion.end_date)).getMonth()).substring(0, 2)}`);
 	suggestion_date_text_div.appendChild(suggestion_date_text)
 	suggestion_head.appendChild(suggestion_date_text_div);
 
@@ -31,7 +31,7 @@ function createSuggestion(suggestion) {
 
 
 	if(suggestion.clash.score == 0) {
-		suggestion_row.className = 'goodSuggestionRow';
+		suggestion_row.className = 'suggestionRow good';
 	} else {
 		var reason_dropdown = document.createElement('div');
 		var reason_dropdown_icon = document.createElement('img');
@@ -50,7 +50,7 @@ function createSuggestion(suggestion) {
 
 		reason_dropdown.addEventListener("click", () => {
 			if(reasons.style.display == 'none') {
-				reasons.style.display = 'block';
+				reasons.style.display = 'inline-block';
 			} else {
 				reasons.style.display = 'none';
 			}
@@ -64,8 +64,7 @@ function createSuggestion(suggestion) {
 
 function createReason(reason) {
 	var reason_row = document.createElement('div');
-	reason_row.className = HEADING_CLASS;
-	var reason_text = document.createTextNode(`${(reason.fraction_of_students * 100).toFixed(0)}% students have an overlap with an assignment of course '${reason.courseWork.course_name}' due on ${reason.courseWork.end_date.substring(0, 10)}`);
+	var reason_text = document.createTextNode(`${(reason.fraction_of_students * 100).toFixed(0)}% students have an overlap with an assignment of course '${reason.courseWork.course_name}' due on ${('0' + (new Date(reason.courseWork.end_date)).getDate()).substring(0, 2)}/${('0' + (new Date(reason.courseWork.end_date)).getMonth()).substring(0, 2)}`);
 	reason_row.appendChild(reason_text);
 	return reason_row;
 }

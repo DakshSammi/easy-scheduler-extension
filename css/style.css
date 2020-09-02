@@ -15,17 +15,17 @@
 	padding: 10px 10px 10px 10px;
 	background-color: #f8f9fa;
 	margin: 10px 10px 10px 10px;
+	width: 140px;
+	display: inline-block;
+	vertical-align: top;
 }
 
-.goodSuggestionRow {
-	padding: 10px 10px 10px 10px;
+.good {
 	background-color: #effff1;
-	margin: 10px 10px 10px 10px;
 }
 
 .suggestionHead {
 	display: flex;	
-	border-bottom: 1px solid #808080;
 }
 
 .suggestionDate {
