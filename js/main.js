@@ -25,7 +25,7 @@ function observeCourseName() {
 			const score = await response.json();
 			console.log(score);
 			var settings = document.getElementsByClassName('fB7J9c kWv2Xb QRiHXd')[0];
-			if(score.score == 0 && !settings.parentNode.contains(alert_bell_div)) {
+			if(score.score == 0 && !settings.parentNode.contains(alert_bell_div) && alert_bell_div!=undefined) {
 				settings.parentNode.insertBefore(alert_bell_div, settings);		
 			} else if(score.score > 0 && settings.parentNode.contains(alert_bell_div)){
 				settings.parentNode.removeChild(alert_bell_div);
