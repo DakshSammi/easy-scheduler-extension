@@ -1,4 +1,5 @@
 var course_name = null;
+var is_instructor = null;
 
 let observer = new MutationObserver((mutations) => {
 	mutations.forEach((mutation) => {
@@ -11,13 +12,16 @@ let observer = new MutationObserver((mutations) => {
 				parent.insertBefore(open_suggestions_popup, node);
 				parent.insertBefore(popup, node);
 			}
+			if(node.className=='u2mfde hN1OOc EZrbnd J1raN S6Vdac' && node.parentNode.parentNode.childElementCount==4) {
+				is_instructor = true;
+			}
 		}
 	});
 });
 
 function observeCourseName() {
 	var course_name_node = document.getElementById('UGb2Qe');
-	if(course_name_node != null && course_name != course_name_node.childNodes[0].data) {
+	if(course_name_node != null && course_name != course_name_node.childNodes[0].data && is_instructor) {
 		course_name = course_name_node.childNodes[0].data;
 		console.log(course_name);
 		let check_student_schedule = `https://deadline-scheduling-suggestion.herokuapp.com/iiitd/${course_name}/student_schedule/week`;
