@@ -1,3 +1,5 @@
+const LESS_SUGGESTIONS = 8;
+
 function createSuggestions(heading, suggestions) {
 	var suggestions_div = document.createElement('div');
 	suggestions_div.className = 'suggestions';
@@ -7,10 +9,48 @@ function createSuggestions(heading, suggestions) {
 	var suggestions_title_text = document.createTextNode(heading);
 	suggestions_title.appendChild(suggestions_title_text);
 
-	suggestions_div.appendChild(suggestions_title);
-	suggestions.forEach((suggestion) => {
-		suggestions_div.appendChild(createSuggestion(suggestion));
+	var suggestions_body_less = document.createElement('div');
+	suggestions.slice(0, LESS_SUGGESTIONS).forEach((suggestion) => {
+		suggestions_body_less.appendChild(createSuggestion(suggestion));
 	});
+	suggestions_body_less.style.display = "block";
+
+	var suggestions_body_more = document.createElement('div');
+	suggestions.forEach((suggestion) => {
+		suggestions_body_more.appendChild(createSuggestion(suggestion));
+	});
+	suggestions_body_more.style.display = "none";
+
+	var showMore = false;
+
+	// get suggestions
+	var show_more_button = createButton("Show More", () => {});
+	show_more_button.addEventListener("click", () => {
+		suggestions_body_less.style.display = "none";
+		suggestions_body_more.style.display = "block";
+		show_more_button.style.display = "none";
+		show_less_button.style.display = "block";
+	})
+
+	var show_less_button = createButton("Show Less", () => {});
+	show_less_button.addEventListener("click", () => {
+		suggestions_body_less.style.display = "block";
+		suggestions_body_more.style.display = "none";
+		show_more_button.style.display = "block";
+		show_less_button.style.display = "none";
+	})
+	show_less_button.style.display = "none";
+
+	suggestions_div.appendChild(suggestions_title);
+	suggestions_div.appendChild(suggestions_body_less);
+
+	if(suggestions.length > 6) {
+		suggestions_div.appendChild(suggestions_body_more);
+		suggestions_div.appendChild(show_less_button);
+		suggestions_div.appendChild(show_more_button);
+	}
+
+
 	return suggestions_div;
 }
 

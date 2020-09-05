@@ -10,8 +10,6 @@ let observer1 = new MutationObserver((mutations) => {
 			let node = mutation.addedNodes[i];
 			//console.log(node);
 			if (node.className=='u2mfde hN1OOc EZrbnd J1raN S6Vdac' && node.parentNode.parentNode.childElementCount==4) {
-				console.log(node);
-				console.log(node.parentNode.parentNode);
 				console.log(node.parentNode.parentNode.childElementCount);
 				alert_bell_div = document.createElement('div')
 				alert_bell_div.className = 'rightMargin';
