@@ -44,7 +44,7 @@ function createSuggestions(heading, suggestions) {
 	suggestions_div.appendChild(suggestions_title);
 	suggestions_div.appendChild(suggestions_body_less);
 
-	if(suggestions.length > 6) {
+	if(suggestions.length > 8) {
 		suggestions_div.appendChild(suggestions_body_more);
 		suggestions_div.appendChild(show_less_button);
 		suggestions_div.appendChild(show_more_button);
