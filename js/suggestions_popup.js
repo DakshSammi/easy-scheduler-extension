@@ -74,7 +74,7 @@ max_due_date_title.className = HEADING_CLASS;
 var max_due_date_input = document.createElement("input");
 max_due_date_input.className = "input";
 max_due_date_input.type = "date";
-max_due_date_input.min = new Date().toISOString().split("T")[0];
+// max_due_date_input.min = new Date().toISOString().split("T")[0];
 
 max_due_date.appendChild(max_due_date_title);
 max_due_date.appendChild(max_due_date_input);
@@ -90,7 +90,7 @@ min_due_date_title.className = HEADING_CLASS;
 var min_due_date_input = document.createElement("input");
 min_due_date_input.className = "input";
 min_due_date_input.type = "date";
-min_due_date_input.min = new Date().toISOString().split("T")[0];
+// min_due_date_input.min = new Date().toISOString().split("T")[0];
 
 min_due_date.appendChild(min_due_date_title);
 min_due_date.appendChild(min_due_date_input);

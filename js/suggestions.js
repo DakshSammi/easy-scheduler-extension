@@ -63,7 +63,7 @@ function createSuggestion(suggestion) {
 
 	var suggestion_date_text_div = document.createElement('div');
 	suggestion_date_text_div.className = HEADING_CLASS + ' suggestionDate'
-	var suggestion_date_text = document.createTextNode(`${('0' + (new Date(suggestion.start_date)).getDate()).substring(0, 2)}/${('0' + (new Date(suggestion.start_date)).getMonth()).substring(0, 2)} to ${('0' + (new Date(suggestion.end_date)).getDate()).substring(0, 2)}/${('0' + (new Date(suggestion.end_date)).getMonth()).substring(0, 2)}`);
+	var suggestion_date_text = document.createTextNode(`${('0' + (new Date(suggestion.start_date)).getDate()).slice(-2)}/${('0' + ((new Date(suggestion.start_date)).getMonth() + 1)).slice(-2)} to ${('0' + (new Date(suggestion.end_date)).getDate()).slice(-2)}/${('0' + ((new Date(suggestion.end_date)).getMonth() + 1)).slice(-2)}`);
 	suggestion_date_text_div.appendChild(suggestion_date_text)
 	suggestion_head.appendChild(suggestion_date_text_div);
 
@@ -104,7 +104,7 @@ function createSuggestion(suggestion) {
 
 function createReason(reason) {
 	var reason_row = document.createElement('div');
-	var reason_text = document.createTextNode(`${(reason.fraction_of_students * 100).toFixed(0)}% students have an overlap with an assignment of course '${reason.courseWork.course_name}' due on ${('0' + (new Date(reason.courseWork.end_date)).getDate()).substring(0, 2)}/${('0' + (new Date(reason.courseWork.end_date)).getMonth()).substring(0, 2)}`);
+	var reason_text = document.createTextNode(`${(reason.fraction_of_students * 100).toFixed(0)}% students have an overlap with an assignment of course '${reason.courseWork.course_name}' due on ${('0' + (new Date(reason.courseWork.end_date)).getDate()).slice(-2)}/${('0' + ((new Date(reason.courseWork.end_date)).getMonth() + 1)).slice(-2)}`);
 	reason_row.appendChild(reason_text);
 	return reason_row;
 }
