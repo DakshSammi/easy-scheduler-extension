@@ -73,6 +73,9 @@ function createSuggestion(suggestion) {
 	if(suggestion.clash.score == 0) {
 		suggestion_row.className = 'suggestionRow good';
 	} else {
+		if(suggestion.clash.score >= 2) {
+			suggestion_row.className = 'suggestionRow bad'
+		}
 		var reason_dropdown = document.createElement('div');
 		var reason_dropdown_icon = document.createElement('img');
 		reason_dropdown_icon.className = 'dropdownIcon';

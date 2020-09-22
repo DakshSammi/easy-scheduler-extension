@@ -23,16 +23,22 @@
 }
 
 .suggestionRow {
-	padding: 10px 10px 10px 10px;
-	background-color: #f8f9fa;
+	padding: 10px 10px 0px 10px;
+	background-color: #aed6fe;
 	margin: 10px 10px 10px 10px;
 	width: 140px;
 	display: inline-block;
 	vertical-align: top;
+	border-radius: 5px;
+	text-align: center;
 }
 
 .good {
-	background-color: #effff1;
+	background-color: #70f4c8;
+}
+
+.bad {
+	background-color: #ff8585;
 }
 
 .suggestionHead {
@@ -40,7 +46,7 @@
 }
 
 .suggestionDate {
-	flex: 0.8;	
+	flex: 1;	
 }
 
 .horizontal {
@@ -62,8 +68,8 @@
 }
 
 .dropdownIcon {
-	height: 24px;
-	width: 24px;
+	height: 20px;
+	width: 20px;
 }
 
 .rightMargin {
