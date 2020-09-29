@@ -78,7 +78,7 @@ function createSuggestion(suggestion) {
 		}
 		var reason_dropdown = document.createElement('div');
 		var reason_dropdown_icon = document.createElement('img');
-		reason_dropdown_icon.className = 'dropdownIcon';
+		reason_dropdown_icon.className = 'smallIcon';
 		reason_dropdown_icon.setAttribute('src', 'https://cdn1.iconfinder.com/data/icons/arrows-vol-1-4/24/dropdown_arrow-512.png');
 		reason_dropdown.appendChild(reason_dropdown_icon);
 		suggestion_head.appendChild(reason_dropdown);
@@ -107,6 +107,7 @@ function createSuggestion(suggestion) {
 
 function createReason(reason) {
 	var reason_row = document.createElement('div');
+	reason_row.className = 'reason'
 	var reason_text = document.createTextNode(`${(reason.fraction_of_students * 100).toFixed(0)}% students have an overlap with an assignment of course '${reason.courseWork.course_name}' due on ${('0' + (new Date(reason.courseWork.end_date)).getDate()).slice(-2)}/${('0' + ((new Date(reason.courseWork.end_date)).getMonth() + 1)).slice(-2)}`);
 	reason_row.appendChild(reason_text);
 	return reason_row;

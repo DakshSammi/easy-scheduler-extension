@@ -128,10 +128,11 @@ var all_suggestions = document.createElement("div");
 
 // popup
 var popup = document.createElement("div");
-popup.className = "modal";
+popup.className = "popupWindow";
+popup.style.display = "none"
 
 var popup_content = document.createElement("div");
-popup_content.className = "modal-content";
+popup_content.className = "popup largePopup";
 
 var popup_span = document.createElement("span");
 popup_span.className = "close";

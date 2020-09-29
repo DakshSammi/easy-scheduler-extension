@@ -1,10 +1,11 @@
 var course_name = null;
 var is_instructor = null;
 
+var announcement_box = null;
+
 let observer = new MutationObserver((mutations) => {
 	mutations.forEach((mutation) => {
 		if (!mutation.addedNodes) return;
-		// observer.disconnect();
 		for (let i = 0; i < mutation.addedNodes.length; i++) {
 			let node = mutation.addedNodes[i];
 			if (node.className == HEADING_CLASS && node.childNodes[0].data == "Due") {
@@ -15,9 +16,24 @@ let observer = new MutationObserver((mutations) => {
 			if(node.className=='u2mfde hN1OOc EZrbnd J1raN S6Vdac' && node.parentNode.parentNode.childElementCount==4) {
 				is_instructor = true;
 			}
+			if(node.className == 'QRiHXd ') {
+				observeAnnouncement(node)
+			}
+			if(node.className == 'hqfVKd tL9Q4c') {
+				announcement_box = node
+			}
 		}
 	});
 });
+
+function observeAnnouncement(node) {
+	node.addEventListener('click', () => {
+		announcement = announcement_box.childNodes[0].data
+		if(announcement.includes('quiz')) {
+			document.body.appendChild(createQuizPopup())
+		}
+	})
+}
 
 function observeCourseName() {
 	var course_name_node = document.getElementById('UGb2Qe');
