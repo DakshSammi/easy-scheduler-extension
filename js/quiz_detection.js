@@ -72,6 +72,7 @@ function createQuizPopup() {
 				quiz_date_input = document.createElement('input')
 				quiz_date_input.setAttribute('type', 'date')
 				quiz_date_input.className = 'input'
+				quiz_date_input.min = new Date().toISOString().split("T")[0];
 
 				quiz_date_submit = createButton('Submit', () => {
 					informAboutQuiz(quiz_date_input.value)
