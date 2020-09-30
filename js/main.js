@@ -27,7 +27,7 @@ let observer = new MutationObserver((mutations) => {
 
 function observeAnnouncement(node) {
 	node.addEventListener('click', () => {
-		announcement = announcement_box.childNodes[0].data
+		announcement = announcement_box.childNodes[0].data.toLowerCase()
 		if(announcement.includes('quiz')) {
 			document.body.appendChild(createQuizPopup())
 		}
