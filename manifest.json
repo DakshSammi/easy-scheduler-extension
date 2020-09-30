@@ -6,7 +6,7 @@
 	"content_scripts": [
 	    {
 	      "matches": ["https://classroom.google.com/*"],
-	      "js": ["js/suggestions.js", "js/get_suggestions.js", "js/suggestions_popup.js", "js/free_alert.js", "js/inform_about_quiz.js", "js/quiz_detection.js", "js/main.js"],
+	      "js": ["js/globals.js", "js/suggestions.js", "js/get_suggestions.js", "js/suggestions_popup.js", "js/free_alert.js", "js/inform_about_quiz.js", "js/quiz_detection.js", "js/main.js"],
 	      "css": ["css/style.css", "css/popup.css"]
 	    }
 	  ]

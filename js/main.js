@@ -1,4 +1,3 @@
-var course_name = null;
 var is_instructor = null;
 
 var announcement_box = null;
@@ -40,7 +39,7 @@ function observeCourseName() {
 	var course_name_node_2 = document.getElementsByClassName('YVvGBb dDKhVc')[0];
 	if(course_name_node == null) return;
 	temp = course_name_node.childNodes[0].data;
-	if(course_name_node_2 != null) {
+	if(course_name_node_2 != null && course_name_node_2.childNodes[0].data != null) {
 		temp += ' ' + course_name_node_2.childNodes[0].data;
 	}
 	if(course_name_node != null && course_name != temp && is_instructor) {

@@ -1,6 +1,3 @@
-const BUTTON_CLASS = "U26fgb cd29Sd p0oLxb BEAGS CG2qQ QRiHXd bVp04e";
-const HEADING_CLASS = "gtuckc tLDEHd-Wvd9Cc";
-
 function createButton(text, onclick) {
   var new_button = document.createElement("div");
   new_button.className = "vertical buttonHeight";
