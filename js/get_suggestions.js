@@ -8,7 +8,7 @@ function fetchSuggestions() {
 	var min_due_date = min_due_date_input.value;
 	var max_due_date = max_due_date_input.value;
 
-	let base_url = `https://deadline-scheduling-suggestion.herokuapp.com/iiitd/${course_name}/get_suggestions/${duration[0]}-${duration[1]}-0/${min_due_date}T00:00:00.000Z/${max_due_date}T00:00:00.000Z`;
+	let base_url = `https://deadline-scheduling-suggestion.herokuapp.com/iiitd/get_suggestions/${course_name}/${duration[0]}-${duration[1]}-0/${min_due_date}T00:00:00.000Z/${max_due_date}T00:00:00.000Z`;
 	console.log(base_url);
 
 	const fetchPromise = fetch(base_url);
