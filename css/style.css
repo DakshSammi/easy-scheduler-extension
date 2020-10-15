@@ -26,7 +26,7 @@
 	padding: 10px 10px 0px 10px;
 	background-color: #aed6fe;
 	margin: 10px 10px 10px 10px;
-	width: 140px;
+	width: 200px;
 	display: inline-block;
 	vertical-align: top;
 	border-radius: 5px;
@@ -54,6 +54,8 @@
 	border-color: grey;
 	border-width: 1px 0px 0px 0px;
 	margin: 5px 5px 5px 5px;
+	text-align: left;
+	font-size: 8;
 }
 
 .horizontal {
