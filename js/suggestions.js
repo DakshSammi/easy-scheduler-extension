@@ -1,4 +1,4 @@
-const LESS_SUGGESTIONS = 8
+const LESS_SUGGESTIONS = 6
 
 function createSuggestions(heading, suggestions) {
 	var suggestions_div = document.createElement('div')
