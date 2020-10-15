@@ -15,6 +15,7 @@
 ![](./UI/suggestions.png)
 ### Bell Icon Alert
 #### Click on the bell icon GIF to view notification from this extension
+![](./UI/bell_icon.png)
 ### Quiz detection
 #### On posting an announcement, you might be prompted to confirm if this announcement was about an upcoming quiz. 
 ![](./UI/quiz_identification.png)
