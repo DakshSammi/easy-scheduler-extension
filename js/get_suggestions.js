@@ -54,12 +54,12 @@ function fetchSuggestions() {
 		console.log(flexi_suggestions);
 		var c = 0;
 		for (var i in suggestions) {
-			if (suggestions[i]['clash']['score'] >= 2) {
+			if (parseInt(suggestions[i]['clash']['score']) < 2) {
 				c=c+1;
 			}
 		}
 		for (var i in flexi_suggestions) {
-			if (flexi_suggestions[i]['clash']['score'] >= 2) {
+			if (parseInt(flexi_suggestions[i]['clash']['score']) < 2) {
 				c=c+1;
 			}
 		}
@@ -104,6 +104,10 @@ function fetchSuggestions() {
 					}
 				}
 				console.log(extra_date);
+				var extra_p = document.createElement('p');
+				var extra_text = document.createElement(`Students are quite busy in this range. ${extra_date} is a better option.`);
+				extra_p.appendChild(extra_text);
+				all_suggestions.appendChild(extra_p);
 			})
 		}
 	})
