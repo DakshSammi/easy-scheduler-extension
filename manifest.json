@@ -1,7 +1,7 @@
 {
-	"name": "Trial",
+	"name": "Classroom Deadline Scheduler",
 	"version": "1.0",
-	"description": "Modify create assignment page",
+	"description": "Adds the functionality of obtaining the best deadline release and due dates based on student workload of other courses.",
 	"manifest_version": 2,
 	"content_scripts": [
 	    {

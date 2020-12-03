@@ -1,17 +1,6 @@
 async function onCourseNameChange(course_name) {
-	// check if course is present in the database
-	var is_present = `https://deadline-scheduling-suggestion.herokuapp.com/iiitd/courses/${course_name}/is_present`
-	var response = fetch(is_present)
-	is_present = response.body == 'true'
-
-	console.log(is_present)
-	// if not first get the course added
-	if(is_present == false) {
-		await promptUserToAddCourse()
-	}
-
 	// check student schedule
-	var check_student_schedule = `https://deadline-scheduling-suggestion.herokuapp.com/iiitd/student_schedule/${course_name}/week`;
+	var check_student_schedule = `${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/student_schedule/${course_name}/week`;
 	response = await fetch(check_student_schedule)
 	const score = await response.json();
 	console.log(score);
@@ -28,8 +17,6 @@ async function promptUserToAddCourse() {
 	// fetch student ids (any unique identifier, eg email) using api
 	// Get instructor name, email
 	// call addCourse
-
-	await addCourse(course_name, 'Raghava Mutharaju', 'raghava@iiitd.ac.in', ['2019001', '2019002', '2019003', '2019004'])
 }
 
 async function addCourse(course_name, professor_name, professor_email, students) {
