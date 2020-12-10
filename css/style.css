@@ -24,17 +24,35 @@
 
 .suggestionRow {
 	padding: 10px 10px 0px 10px;
-	background-color: #aed6fe;
 	margin: 10px 10px 10px 10px;
 	width: 200px;
 	display: inline-block;
-	vertical-align: top;
+	vertical-align: text-top;
 	border-radius: 5px;
 	text-align: center;
 }
 
+.legendRow {
+	padding: 20px 20px 20px 20px;
+	vertical-align: bottom;
+	display: inline-block;
+}
+
+.legendText {
+	padding: 0px 10px 10px 10px;
+	display: inline-block;
+}
+
+.verticalAlignMiddle {
+	vertical-align: middle;
+}
+
 .good {
 	background-color: #70f4c8;
+}
+
+.neutral {
+	background-color: #aed6fe;
 }
 
 .bad {
@@ -170,5 +188,10 @@
 
 .text {
 	color: grey;
+	font-size: 15px;
+}
+
+.error {
+	color: red;
 	font-size: 15px;
 }

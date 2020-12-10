@@ -56,7 +56,7 @@ function createSuggestions(heading, suggestions) {
 
 function createSuggestion(suggestion) {
 	var suggestion_row = document.createElement('div')
-	suggestion_row.className = 'suggestionRow'
+	suggestion_row.className = 'suggestionRow neutral'
 
 	var suggestion_head = document.createElement('div')
 	suggestion_head.className = 'suggestionHead'

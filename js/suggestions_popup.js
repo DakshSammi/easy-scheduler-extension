@@ -111,6 +111,57 @@ flexi_suggestions_label.appendChild(flexi_suggestions_label_text);
 
 // get suggestions
 var get_suggestions = createButton("Get Suggestions", fetchSuggestions);
+get_suggestions.style.display = 'block'
+
+var get_suggestions_loading = createButton('', null)
+get_suggestions_loading.style.display = 'none'
+img = document.createElement('img');
+img.className = 'smallIcon';
+img.setAttribute('src', chrome.runtime.getURL('assets/loading.gif'));
+get_suggestions_loading.childNodes[0].childNodes[0].appendChild(img)
+
+
+var error_message = document.createElement('div')
+error_message.appendChild(document.createTextNode('Oops! An error occurred! Please try again.'))
+error_message.className = 'center error'
+error_message.style.display = 'none'
+
+// colour legend
+var legend = document.createElement('div')
+
+var good = document.createElement('div')
+good.className = 'legendRow'
+var good_icon = document.createElement('div')
+good_icon.className = 'smallIcon horizontal good'
+var good_text = document.createElement('div')
+good_text.className = 'legendText'
+good_text.appendChild(document.createTextNode('students free'))
+good.appendChild(good_icon)
+good.appendChild(good_text)
+legend.appendChild(good)
+
+var neutral = document.createElement('div')
+neutral.className = 'legendRow'
+var neutral_icon = document.createElement('div')
+neutral_icon.className = 'smallIcon horizontal neutral'
+var neutral_text = document.createElement('div') 
+neutral_text.className = 'legendText'
+neutral_text.appendChild(document.createTextNode(' students moderately busy'))
+neutral.appendChild(neutral_icon)
+neutral.appendChild(neutral_text)
+legend.appendChild(neutral)
+
+var bad = document.createElement('div')
+bad.className = 'legendRow'
+var bad_icon = document.createElement('div')
+bad_icon.className = 'smallIcon horizontal bad'
+var bad_text = document.createElement('div')
+bad_text.className = 'legendText'
+bad_text.appendChild(document.createTextNode(' students extremely busy'))
+bad.appendChild(bad_icon)
+bad.appendChild(bad_text)
+legend.appendChild(bad)
+
 
 // all inputs
 var all_inputs = document.createElement("div");
@@ -137,6 +188,9 @@ popup_span.className = "close";
 popup_content.appendChild(all_inputs);
 popup_content.appendChild(flexi_suggestions);
 popup_content.appendChild(get_suggestions);
+popup_content.appendChild(get_suggestions_loading);
+popup_content.appendChild(error_message);
+popup_content.appendChild(legend);
 popup_content.appendChild(all_suggestions);
 popup.appendChild(popup_content);
 popup.appendChild(popup_span);
