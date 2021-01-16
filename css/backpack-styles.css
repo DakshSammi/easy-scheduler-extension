@@ -1,0 +1,869 @@
+.schedulingPanel {
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+}
+
+.panelRow {
+    width: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    display: flex;
+    margin-bottom: 10px;
+    padding-left: 5px;
+}
+
+.panelHeader {
+    font-weight: bold;
+    width: 100%;
+    padding-left: 5px;
+}
+
+.durationContainer {
+    width: 100%;
+    max-width: 500px;
+    height: 35px;
+    display: flex;
+}
+
+.typeSelectorContainer {
+    height: 35px;
+    display: flex;
+    margin-right: 30px;
+}
+
+.dateTimeContainer {
+    flex: 1 1 auto;
+    justify-content: left;
+    max-width: 600px;
+    height: 35px;
+    display: flex;
+}
+
+.input-label{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1;
+    color: #555;
+    text-align: center;
+    background-color: #eee;
+    border: 1px solid #ccc;
+}
+
+.label-middle{
+    border-left-width: 0px;
+    border-right-width: 0px;
+}
+
+.label-right{
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-left-width: 0px;
+}
+
+.durationInputLeft {
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    max-width: 120px;
+}
+
+.durationInputMiddle {
+    border-radius: 0px !important;
+    max-width: 120px;
+}
+
+.csButton {
+    position: relative;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid #ddd !important;
+    color: #000 !important;
+    background: #fff !important;
+}
+
+.csButtonDisabled {
+    position: relative;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid #ddd !important;
+    color: rgb(52, 152, 219) !important;
+    background: rgb(52, 152, 219) !important;
+    cursor: default !important;
+}
+
+.disabled-btn-primary {
+    position: relative;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid #ddd !important;
+    color: #e67e22 !important;
+    background-color: #e67e22 !important;
+    cursor: default !important;
+}
+
+.csButtonSelected {
+    background-color: #3498db !important;
+    border: 1px solid #ddd !important;
+    outline: 0;
+}
+
+.middleButton {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    border-radius: 0px !important;
+    border-left-width: 0px !important;
+    border-right-width: 0px !important;
+}
+
+.rightButton {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+    border-top-right-radius: 4px !important;
+    border-bottom-right-radius: 4px !important;
+}
+
+.leftButton {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    border-top-left-radius: 4px !important;
+    border-bottom-left-radius: 4px !important;
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    border-right-width: 0px !important;
+}
+
+.panelFlexContainer {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.panelFlexColumn {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    min-width: 400px;
+}
+
+.dropdownContainer {
+    width: 100%;
+    max-width: 600px;
+    height: 35px;
+    position: relative;
+}
+
+.dropdownContainerWarning {
+    width: 100%;
+    max-width: 600px;
+    height: 35px;
+    position: relative;
+    box-shadow: 0 0 0 0.4rem rgba(255, 187, 51, 0.25);
+    border-radius: 4px;
+}
+
+.dropdownContainerCorrect {
+    width: 100%;
+    max-width: 600px;
+    height: 35px;
+    position: relative;
+    box-shadow: 0 0 0 0.4rem rgba(0, 200, 81, 0.25);
+    border-radius: 4px;
+}
+
+.dropdownContainer .suggestionDropDown {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    display: flex;
+    cursor: pointer;
+    position: relative;
+}
+
+.dropdownContainerWarning .suggestionDropDown {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    background-color: #ffffff;
+    border: 1px solid #ffbb33;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    display: flex;
+    cursor: pointer;
+    position: relative;
+}
+
+.dropdownContainerCorrect .suggestionDropDown {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    background-color: #ffffff;
+    border: 1px solid #00c851;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    display: flex;
+    cursor: pointer;
+    position: relative;
+}
+
+
+
+.warningMessage {
+    color: #ffbb33;
+    font-weight: bold;
+    transition: all 0.5s  cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.correctMessage {
+    color: #00c851;
+    font-weight: bold;
+    transition: all 0.5s  cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.dropdownRow {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.dropdownIconContainer {
+    height: 100% !important;
+    position: absolute !important;
+    right: 10px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+}
+
+.dropdownMenu {
+    position: absolute;
+    top: 100%;
+    margin-top: 10px;
+    left: 0px;
+    right: 0px;
+    z-index: 100;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    border: 1px solid #ccc;
+    padding-left: 0px !important;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.invisible {
+    display: none;
+}
+
+.suggestionContainer {
+    width: 100%;
+    height: 35px;
+    display: flex;
+    align-items: center;
+}
+
+.suggestionItem {
+    width: 100%;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.suggestionItem:hover {
+    width: 100%;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    background-color: #3498db;
+    color: #fff;
+}
+
+.suggestionIcon {
+    margin-right: 5px;
+}
+
+.suggestionSpan {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    width: 40%;
+    padding-left: 20px;
+}
+
+.dropDownButtonContent {
+    display: flex;
+    width: 100%;
+}
+
+.toDiv {
+    width: 10%;
+    display: flex;
+    justify-content: center;
+}
+
+.tooltipTrigger {
+    margin-left: 10px;
+    font-weight: normal;
+    color: #428bca;
+    cursor: pointer;
+    font-size: 15px;
+    position: relative;
+}
+
+.tooltipTrigger::after {
+    content: "";
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 1px;
+    border-width: 0 0 1px;
+    border-style: dotted;
+}
+
+.tooltipTrigger .tooltiptext {
+    visibility: hidden;
+    width: 400px;
+    font-size: 15px;
+    background-color: #3498db;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 10;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -220px; /* Use half of the width (120/2 = 60), to center the tooltip */
+
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+
+    padding: 5px;
+}
+
+.tooltipTrigger .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 100%; /* At the bottom of the tooltip */
+    left: 50%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #3498db transparent transparent;
+}
+
+.tooltipTrigger:hover .tooltiptext {
+    opacity: 1;
+}
+
+.tooltipTrigger .tooltiptext {
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.tooltipTrigger:hover .tooltiptext {
+    visibility: visible;
+}
+
+.computeButtonLoader {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader {
+    width: 20px !important;
+    height: 20px !important;
+    border: 3px solid white;
+    border-radius: 100%;
+    border-top: 5px solid transparent;
+    animation: load-animate infinite linear 1s;
+}
+
+@keyframes load-animate {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.alertBanner {
+    position: absolute;
+    background-color: #3498db;
+    height: 50px;
+    left: 0px;
+    right: 0px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+}
+
+.flex {
+    display: flex;
+}
+
+.alertMessage {
+    color: white;
+    font-weight: bold;
+    font-size: large;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.suggestionsPanelContainer{
+    width: 100%;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    margin-top: 5px;
+    transition: all 0.5s  cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    justify-content: center;
+}
+
+.suggestionMessage {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    z-index: 3;
+    bottom: 5px;
+    left: 20px;
+    display: flex;
+    transition: all 0.5s  cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.suggestionsPanel {
+    position: relative;
+    z-index: 5;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    border: 2px solid #e3e3e3;
+    transition: all 0.5s  cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.suggestionsPanelWarning{
+    position: relative;
+    z-index: 5;
+    background-color: rgba(255,187,51,0.05);
+    border-radius: 5px;
+    border: 2px solid #ffbb33;
+    box-shadow: inset 0 3px 3px rgba(0,0,0,0.075), 0 0 8px rgba(255,187,51,0.6);
+    transition: all 0.5s  cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.suggestionsPanelCorrect{
+    position: relative;
+    z-index: 5;
+    background-color: rgba(0,200,81,0.05);
+    border-radius: 5px;
+    border: 2px solid #00c851;
+    box-shadow: inset 0 3px 3px rgba(0,0,0,0.075), 0 0 8px rgba(0,200,81,0.6);
+    transition: all 0.5s  cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.correctMessage {
+    color: #00c851;
+    font-weight: bold;
+}
+
+.suggestionsContainer {
+    position: absolute;
+    top: 5px;
+    left: 0px;
+    right: 0px;
+    bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start; /* NEW */
+    justify-content: left;
+}
+
+.suggestionCardContainer {
+    width: 16.666667%;
+    height: 66.6667px;
+    position: relative;
+}
+
+.suggestionCard {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.suggestionCardSelected {
+    position: absolute;
+    top: 7px;
+    left: 5px;
+    right: 5px;
+    bottom: 7px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    font-weight: bold;
+    font-size: larger;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.suggestionCard:hover {
+    border-radius: 6px;
+    font-weight: bold;
+    transition: all 0.1s linear;
+}
+
+.suggestionCardGreen {
+    background-color: #add5f0;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.suggestionCardGreenSelected {
+    background-color: #3498db;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.suggestionCardYellow {
+    background-color: #f5cba6;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.suggestionCardYellowSelected {
+    background-color: #e67e22;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.auto-tag-toggle-cont{
+    display: flex;
+    align-items: center;
+    height: 29.5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.auto-tag-toggle-label{
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.tags-panel{
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: left;
+}
+
+.btn-new-tag{
+    border-radius: 10px;
+    padding-left: 7px;
+    padding-right: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    color: #3498db;
+    font-weight: bold;
+    border: 1px solid #3498db;
+    cursor: pointer;
+    font-size: 12px;
+    position: relative;
+    transition: border-color 0.3s linear;
+}
+
+
+.tag-manual{
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    color: white;
+    font-weight: bold;
+    border: 1px solid;
+    border-top-color:  #3498db;
+    border-right-color:  #3498db;
+    border-bottom-color:  #3498db;
+    border-left-color: white;
+    cursor: default;
+    font-size: 12px;
+    position: relative;
+    background-color: #3498db;
+    margin-right: 5px;
+    position: relative;
+}
+
+.tag-close-manual{
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    color: white;
+    border: 1px solid;
+    border-right-width: 0px !important;
+    border-top-color:  #3498db;
+    border-left-color:  #3498db;
+    border-bottom-color:  #3498db;
+    border-right-color: white;
+    cursor: pointer;
+    background-color: #3498db;
+    font-size: 12px;
+}
+
+.tag-auto{
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    border: 1px solid;
+    border-top-color:  #add5f0;
+    border-right-color:  #add5f0;
+    border-bottom-color:  #add5f0;
+    border-left-color:  white;
+    cursor: default;
+    font-size: 12px;
+    position: relative;
+    background-color: #add5f0;
+    margin-right: 5px;
+    position: relative;
+}
+
+.tag-close-auto{
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    border: 1px solid;
+    border-right-width: 0px !important;
+    border-top-color:  #add5f0;
+    border-left-color:  #add5f0;
+    border-bottom-color:  #add5f0;
+    border-right-color: #add5f0;
+    cursor: pointer;
+    background-color: #add5f0;
+    font-size: 12px;
+}
+
+.tag-selection{
+    flex-grow: 0;
+    border-radius: 10px;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    color: white;
+    font-weight: bold;
+    border: 1px solid #3498db;
+    cursor: pointer;
+    font-size: 12px;
+    position: relative;
+    background-color: #3498db;
+    margin-top: 7px;
+    margin-right: 5px;
+}
+
+.tag-display{
+    flex-grow: 0;
+    border-radius: 10px;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    border: 1px solid #add5f0;
+    font-size: 12px;
+    position: relative;
+    background-color: #add5f0;
+    margin-right: 5px;
+}
+
+.tag-overlay-visible{
+    pointer-events: none;
+    background-color: #ececec;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    border-radius: 10px;
+    border: 1px solid #ececec;
+    transition: all 0.3s linear;
+    z-index: 5;
+}
+
+.tag-overlay-invisible{
+    pointer-events: none;
+    background-color: rgba(236, 236, 236, 0);
+    border: 1px solid rgba(236, 236, 236, 0);
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    border-radius: 10px;
+    transition: all 0.3s linear;
+    z-index: 5;
+}
+
+
+.tag-window-visible{
+    position: absolute;
+    align-items: flex-start;
+    align-content: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    z-index: 10;
+    top: 30px;
+    width: 200px;
+    height: 200px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    cursor: default;
+    transition: all 0.2s linear;
+}
+
+.tag-window-closed{
+    position: absolute;
+    align-items: flex-start;
+    align-content: flex-start;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    z-index: 10;
+    top: 150px;
+    width: 200px;
+    height: 200px;
+    background-color: rgba(0,0,0,0);
+    border-color: #ddd;
+    cursor: default;
+    transition: all 0.2s linear;
+}
+
+.tag-window-hidden{
+    display: none;
+}
+
+.click-catcher-black{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 9;
+    background-color: rgba(0,0,0,0.1);
+    transition: background-color 0.2s linear;
+}
+
+.click-catcher{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 9;
+    transition: background-color 0.2s linear;
+}
+
+.tag-attr-panel{
+    width: 100%;
+    height: 0px;
+    display: flex;
+    flex-direction: column;
+    transition: height linear 0.2s;
+}
+
+.tag-attr-container{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.tag-attr-container-row{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.tag-attr-label{
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.tag-attr-overlay-visible{
+    position: absolute;
+    pointer-events: none;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-color: #ececec;
+    z-index: 10;
+    transition: background-color 0.2s linear;
+}
+
+.tag-attr-overlay-invisible{
+    position: absolute;
+    pointer-events: none;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-color: rgba(236, 236, 236, 0);
+    z-index: 10;
+    transition: background-color 0.2s linear;
+}
