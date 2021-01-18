@@ -7,10 +7,10 @@ function getDurationStr(duration, durationUnit) {
     }
 }
 
-function getScheduleStr(dateStr, timeStr) {
+function getScheduleStr(dateStr) {
     var dateComp = dateStr.split('/');
     var scheduleDateStr = `${dateComp[2]}-${dateComp[1]}-${dateComp[0]}`;
-    var scheduleTimeStr = timeStr + ":00.000Z";
+    var scheduleTimeStr = "00:00:00.000Z";
     var scheduleStr = `${scheduleDateStr}T${scheduleTimeStr}`;
     return (scheduleStr);
 }
@@ -38,123 +38,66 @@ function isQuizAnnouncement(content) {
     return (false);
 }
 
-function extractDate(content, forward = true) {
-    var chrono = require('chrono-node');
-    var dateNow = new Date(Date.now());
-    var dateResult = chrono.parseDate(content.toUpperCase(), dateNow, { forwardDate: forward });
-    if (dateResult !== null && dateResult !== undefined) {
-        return (dateResult);
-    }
-    return (null);
+function extractDate(content) {
+    request = `${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/find_date/${content}`;
+    return fetch_(request);
 }
 
-function getAnnouncementContentFromMessage(message) {
-    if (message.title === null || message.title === undefined)
-        message.title = "";
-    if (message.text === null || message.text === undefined)
-        message.text = "";
-    var striptags = require('striptags');
-    var text = striptags(message.text, "", " ");
+function getAnnouncementContentFromMessage(title, text) {
+    if (title === null || title === undefined)
+        title = "";
+    if (text === null || text === undefined)
+        text = "";
+    var text = text.replace(/(<([^>]+)>)/gi, "");
     text = text.replace(new RegExp("&nbsp;", "g"), ' ');
 
-    var content = message.title + " " + text;
+    var content = title + " " + text;
     return (content);
 }
 
-function sendMessage(tags) {
-    var msg = {
-        type: 'check-announcement-tags',
-        tags: tags
-    };
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, msg);
-    });
+function checkAnnouncementTags(title, text, callback) {
+    var content = getAnnouncementContentFromMessage(title, text);
+    extractDate(content).then((date) => {
+        date.text().then((date) => {
+            date = new Date(date);
+            if (isQuizAnnouncement(content)) {
+                tags = [{
+                    name: 'Exam Announcement',
+                    attr1: date.getTime()
+                }
+                ];
+                callback(tags);
+            }
+            else {
+                callback([])
+            }
+
+        })
+    });   
 }
 
-function checkAnnouncementTags(content) {
-    var date = extractDate(content);
-    if (date == null) {
-        sendMessage([]);
-        return;
-    }
-    tags = []
-    if (isQuizAnnouncement(content)) {
-        tags = [{
-            name: 'Exam Announcement',
-            attr1: date.getTime()
-        }
-        ];
-        sendMessage(tags);
-    }
-    else {
-        sendMessage([]);
-        return;
-    }
+// Inform the API regarding the upcoming quiz
+function informAboutQuiz(date) {
+    var start_date = new Date(date)
+    var end_date = new Date(date)
+    end_date.setHours(end_date.getHours() + 1)
+    console.log(`${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/inform_about_event/Quiz: ${course_name}/${start_date.toISOString()}/${end_date.toISOString()}`)
+    fetch(`${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/inform_about_event/Quiz: ${course_name}/${start_date.toISOString()}/${end_date.toISOString()}`).then((response) => {
+        return response.json();
+    }).then((res) => {
+        console.log(res)
+    })
 }
 
-chrome.runtime.onMessage.addListener(
-    function (message, sender, sendResponse) {
-        if (message.type == 'fetchSuggestions') {
-            var xhr = new XMLHttpRequest();
-            var durationStr = `${message.days}-${message.hours}-0`;
-            var minScheduleStr = getScheduleStr(message.minDueDate, message.minDueTime);
-            var maxScheduleStr = getScheduleStr(message.maxDueDate, message.maxDueTime);
 
-            // API call fetch schedules
+function fetchSuggestions(days, hours, minDueDate, maxDueDate) {
+    var durationStr = `${days}-${hours}-0`;
+    var minScheduleStr = getScheduleStr(minDueDate);
+    var maxScheduleStr = getScheduleStr(maxDueDate);
 
-            // var request=`https://deadline-scheduling-suggestion.herokuapp.com/iiitd/CSE%20101%20-%20IP%20-%20Section%20A%20Section%20A/get_suggestions/${durationStr}/${minScheduleStr}/${maxScheduleStr}`;
-            var request = "https://run.mocky.io/v3/c7140aa1-2056-4d30-bf54-4d66b53f5260";
-            // var request = "https://run.mocky.io/v3/f7b9f325-a7bd-45fc-a51c-bd60dcade20d";
-            xhr.open('GET', request);
-            xhr.onload = function () {
-                var msg = {
-                    type: 'fetchSuggestions',
-                    message: xhr.responseText
-                };
-                chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-                    chrome.tabs.sendMessage(tabs[0].id, msg);
-                });
-            };
-            xhr.send();
-            return (true);
-        }
+    // API call fetch schedules
 
-        else if (message.type == 'check-announcement-tags') {
-            var content = getAnnouncementContentFromMessage(message);
-            checkAnnouncementTags(content);
-        }
-    }
-);
-
-chrome.runtime.onInstalled.addListener(function () {
-    chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-        if (changeInfo.status === 'complete') {
-            chrome.tabs.sendMessage(tabId, {
-                message: 'TabUpdated',
-                changeInfo: changeInfo,
-                tab: tab
-            });
-        }
-    });
-});
-
-chrome.windows.onCreated.addListener(function () {
-    chrome.tabs.sendMessage(0, {
-        message: 'TabUpdated',
-        changeInfo: null,
-        tab: null
-    });
-});
-
-
-chrome.runtime.onStartup.addListener(function() {
-    chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-        if (changeInfo.status === 'complete') {
-            chrome.tabs.sendMessage(tabId, {
-                message: 'TabUpdated',
-                changeInfo: changeInfo,
-                tab: tab
-            });
-        }
-    });
-  });
+    var request=`${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/get_suggestions/CSE202 - Fundamentals of Database Management Systems/${durationStr}/${minScheduleStr}/${maxScheduleStr}`;
+    console.log(request);
+    return fetch_(request);
+}

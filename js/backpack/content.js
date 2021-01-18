@@ -477,11 +477,11 @@ function showSuggestions() {
             daysInput.value = "0";
         if (hoursInput.value === "")
             hoursInput.value = "0";
-        chrome.runtime.sendMessage({
-            type: "fetchSuggestions", hours: hoursInput.value, days: daysInput.value, minDueDate: minDueDate, minDueTime: minDueTime,
-            maxDueDate: maxDueDate, maxDueTime: maxDueTime
-        });
         setFetchSuggestionLoadingState();
+        fetchSuggestions(hoursInput.value, daysInput.value, minDueDate, maxDueDate).then((response) => {
+            return response.json();
+        }).then(onSuggestionsFetch)
+
     }
 }
 
@@ -911,56 +911,51 @@ function getFlexibleDurationSelector() {
     return (typeSelectorContainer);
 }
 
+function onSuggestionsFetch(scheduleResponse) {
+    var id = 0;
+    for (var i = 0; i < scheduleResponse.suggestions.length; ++i)
+        scheduleResponse.suggestions[i].id = id++;
+    for (var i = 0; i < scheduleResponse.flexi_suggestions.length; ++i)
+        scheduleResponse.flexi_suggestions[i].id = id++;
+    unsetFetchSuggestionLoadingState();
+    var schedulingPanel = document.getElementById('scheduling-panel');
+
+    schedulingPanel.appendChild(getHeaderRow("Deadline Schedule Suggestions"));
+    schedulingPanel.appendChild(getPanelRow(getFlexibleDurationSelector(), "margin-bottom:5px;"));
+    schedulingPanel.appendChild(getSuggestionsPanel(scheduleResponse));
+
+    schedulingPanel.appendChild(getHeaderRow("Deadline Release Date & Time"));
+
+
+    var rowDiv = document.createElement('div');
+    rowDiv.setAttribute('style', "display:flex; width:100%");
+    rowDiv.appendChild(getScheduleTypeSelector());
+    rowDiv.appendChild(getDateTimeSelector("due-start"));
+    schedulingPanel.appendChild(getPanelRow(rowDiv));
+
+    schedulingPanel.appendChild(getHeaderRow("Deadline Due Date & Time"));
+    schedulingPanel.appendChild(getPanelRow(getDateTimeSelector("due-end")));
+
+    document.getElementById("due-start").childNodes[0].childNodes[0].childNodes[0].value = parseDateInput(scheduleResponse.suggestions[0].start_date);
+    document.getElementById("due-start").childNodes[1].childNodes[0].childNodes[0].value = parseTime(scheduleResponse.suggestions[0].start_date);
+
+    document.getElementById("due-end").childNodes[0].childNodes[0].childNodes[0].value = parseDateInput(scheduleResponse.suggestions[0].end_date);
+    document.getElementById("due-end").childNodes[1].childNodes[0].childNodes[0].value = parseTime(scheduleResponse.suggestions[0].end_date);
+
+    document.getElementById("due-end").childNodes[0].childNodes[0].childNodes[0].setAttribute("name", "deadline[date_part]");
+    document.getElementById("due-end").childNodes[1].childNodes[0].childNodes[0].setAttribute("name", "deadline[time_part]");
+    repositionFooter();
+
+    showSuggestionMessage(scheduleResponse.suggestions[0]);
+    selectedFixedSchedule = scheduleResponse.suggestions[0];
+    selectedFlexibleSchedule = scheduleResponse.flexi_suggestions[0];
+}
+
 chrome.extension.onMessage.addListener(function (msg, sender, sendResponse) {
-    if (msg.type == 'fetchSuggestions') {
-        scheduleResponse = JSON.parse(msg.message);
-        var id = 0;
-        for (var i = 0; i < scheduleResponse.suggestions.length; ++i)
-            scheduleResponse.suggestions[i].id = id++;
-        for (var i = 0; i < scheduleResponse.flexi_suggestions.length; ++i)
-            scheduleResponse.flexi_suggestions[i].id = id++;
-        unsetFetchSuggestionLoadingState();
-        var schedulingPanel = document.getElementById('scheduling-panel');
-
-        schedulingPanel.appendChild(getHeaderRow("Deadline Schedule Suggestions"));
-        schedulingPanel.appendChild(getPanelRow(getFlexibleDurationSelector(), "margin-bottom:5px;"));
-        schedulingPanel.appendChild(getSuggestionsPanel(scheduleResponse));
-
-        schedulingPanel.appendChild(getHeaderRow("Deadline Release Date & Time"));
-
-
-        var rowDiv = document.createElement('div');
-        rowDiv.setAttribute('style', "display:flex; width:100%");
-        rowDiv.appendChild(getScheduleTypeSelector());
-        rowDiv.appendChild(getDateTimeSelector("due-start"));
-        schedulingPanel.appendChild(getPanelRow(rowDiv));
-
-        schedulingPanel.appendChild(getHeaderRow("Deadline Due Date & Time"));
-        schedulingPanel.appendChild(getPanelRow(getDateTimeSelector("due-end")));
-
-        document.getElementById("due-start").childNodes[0].childNodes[0].childNodes[0].value = parseDateInput(scheduleResponse.suggestions[0].start_date);
-        document.getElementById("due-start").childNodes[1].childNodes[0].childNodes[0].value = parseTime(scheduleResponse.suggestions[0].start_date);
-
-        document.getElementById("due-end").childNodes[0].childNodes[0].childNodes[0].value = parseDateInput(scheduleResponse.suggestions[0].end_date);
-        document.getElementById("due-end").childNodes[1].childNodes[0].childNodes[0].value = parseTime(scheduleResponse.suggestions[0].end_date);
-
-        document.getElementById("due-end").childNodes[0].childNodes[0].childNodes[0].setAttribute("name", "deadline[date_part]");
-        document.getElementById("due-end").childNodes[1].childNodes[0].childNodes[0].setAttribute("name", "deadline[time_part]");
-        repositionFooter();
-
-        showSuggestionMessage(scheduleResponse.suggestions[0]);
-        selectedFixedSchedule = scheduleResponse.suggestions[0];
-        selectedFlexibleSchedule = scheduleResponse.flexi_suggestions[0];
-    }
-
-    else if (msg.type == 'setReminder') {
+    if (msg.type == 'setReminder') {
         unsetCreateReminderLoadingState(msg.message);
         var noShowDiv = document.getElementById('deadline_no_show');
         noShowDiv.setAttribute('style', 'display:none;')
-    }
-
-    else if (msg.type == 'check-announcement-tags') {
-        tagsPanel.addTagsAuto(msg.tags);
     }
 });
 
@@ -1061,43 +1056,20 @@ function prepareAlertBanner() {
     alertBanner.appendChild(alertMessage);
 }
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (request.message === 'TabUpdated') {
-        var url = request.tab.url;
-        var urlComp = url.split('/');
-        if (urlComp[2] === "www.usebackpack.com" && urlComp[4] == "courses" && urlComp[6] == "deadlines") {
-            var id = setInterval(() => {
-                if (document.getElementById('new_deadline') !== null) {
-                    clearInterval(id);
-                    updateDom();
-                }
-            }, 200);
-        }
-        if (urlComp[2] !== "www.usebackpack.com") {
-            alertBannerPrepared = false;
-        }
-        if (urlComp[2] === "www.usebackpack.com" && urlComp[4] == "courses" && urlComp[6] == "announcements") {
-            var id = setInterval(() => {
-                if (document.getElementById('announcement_title') !== null) {
-                    clearInterval(id);
-                    updateDomAnnouncements();
-                }
-            }, 200);
-        }
-    }
-})
-
 function updateDom() {
     removeDateTimeFields();
     var deadlineNoShow = document.getElementById('deadline_no_show');
-    deadlineNoShow.insertBefore(getSchedulingPanel(), deadlineNoShow.childNodes[1]);
-    if (!alertBannerPrepared) {
+    if(document.getElementById('scheduling-panel') == null) {
+        deadlineNoShow.insertBefore(getSchedulingPanel(), deadlineNoShow.childNodes[1]);
+    }
+    if (document.getElementById('alertBanner') == null) {
         prepareAlertBanner();
         alertBannerPrepared = true;
     }
 }
 
 function updateDomAnnouncements() {
+    if(document.getElementById('tags-panel') != null) return;
     tagsPanel = new TagsPanel();
 }
 
@@ -1109,9 +1081,7 @@ class TagsPanel {
             if (this.auto == true) {
                 var title = document.getElementById('announcement_title').value;
                 var text = document.getElementById('announcement_body').value;
-                chrome.runtime.sendMessage({
-                    type: "check-announcement-tags", title: title, text: text
-                });
+                checkAnnouncementTags(title, text, (tags) => {tagsPanel.addTagsAuto(tags);});
             }
         }, 1000);
     }
@@ -1123,6 +1093,7 @@ class TagsPanel {
         this.domPanel = document.createElement('div');
         announcementNoShow.insertBefore(this.domPanel, announcementNoShow.firstChild);
         this.domPanel.className = 'tags-panel';
+        this.domPanel.id = 'tags-panel';
         this.newTagButton = document.createElement('div');
         this.newTagWindow = document.createElement('div');
         this.skipNewTagToggle = false;
@@ -1152,6 +1123,7 @@ class TagsPanel {
         }, 10);
         this.setupPersist();
         this.formatTags();
+        console.log('created')
     }
 
     resetData() {

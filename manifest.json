@@ -3,15 +3,9 @@
 	"version": "2",
 	"description": "Adds the functionality of obtaining the best deadline release and due dates based on student workload of other courses.",
 	"manifest_version": 2,
-	"background":{
-        "persistent":true,
-        "page":"backpack-background.html"
-	},
-	"content_security_policy":"script-src 'self' https://www.gstatic.com https://unpkg.com https://cdn.jsdelivr.net; object-src 'self'",
-	"permissions":[
-        "https://run.mocky.io/",
-        "tabs"
-    ],
+	"permissions": [
+	    "tabs"
+	],
 	"content_scripts": [
 	    {
 	      "matches": ["https://classroom.google.com/*"],
@@ -20,8 +14,8 @@
 		},
 		{   
             "css":["./css/backpack-styles.css"],
-            "js":["js/backpack/content.js", "js/backpack/background.js"],
-            "matches":["http://*/*", "https://*/*"],
+            "js":["js/globals.js", "js/backpack/content.js", "js/backpack/background.js", "js/backpack/main.js"],
+            "matches":["https://www.usebackpack.com/*"],
             "run_at": "document_end"
         }
 	  ],

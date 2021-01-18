@@ -72,7 +72,7 @@ function fetchSuggestions() {
 		var new_min_due_date = max_due_date;
 		var new_max_due_date = formatDate(addDays(max_due_date, 20));
 		var extra_date;
-		let url = `https://deadline-scheduling-suggestion.herokuapp.com/iiitd/get_suggestions/${course_name}/${duration[0]}-${duration[1]}-0/${new_min_due_date}T00:00:00.000Z/${new_max_due_date}T00:00:00.000Z`;
+		let url = `https://${DEADLINE_SCHEDULING_SUGGESTION_API}/${course_name}/get_suggestions/${course_name}/${duration[0]}-${duration[1]}-0/${new_min_due_date}T00:00:00.000Z/${new_max_due_date}T00:00:00.000Z`;
 		const promise = fetch_(url);
 		promise.then((response) => {
 			return response.json();
