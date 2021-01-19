@@ -1,5 +1,4 @@
 // Create a div for asking whether the announcement is a quiz
-
 function createQuizPopup() {
 	quiz_popup_window = document.createElement('div')
 	quiz_popup_window.className = 'popupWindow'
@@ -89,4 +88,17 @@ function createQuizPopup() {
 	// Quiz date inputs
 
 	return quiz_popup_window
+}
+
+// Inform the API regarding the upcoming quiz
+function informAboutQuiz(date) {
+    var start_date = new Date(date)
+    var end_date = new Date(date)
+    end_date.setHours(end_date.getHours() + 1)
+    console.log(`${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/inform_about_event/Quiz: ${course_name}/${start_date.toISOString()}/${end_date.toISOString()}`)
+    fetch(`${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/inform_about_event/Quiz: ${course_name}/${start_date.toISOString()}/${end_date.toISOString()}`).then((response) => {
+        return response.json();
+    }).then((res) => {
+        console.log(res)
+    })
 }
