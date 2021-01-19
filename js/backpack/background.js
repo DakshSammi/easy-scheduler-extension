@@ -78,8 +78,9 @@ function checkAnnouncementTags(title, text, callback) {
 
 // Inform the API regarding the upcoming quiz
 function informAboutQuiz(date) {
-    var start_date = new Date(date)
-    var end_date = new Date(date)
+    var dateParts = date.split("/");
+    var start_date = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0])
+    var end_date = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0])
     end_date.setHours(end_date.getHours() + 1)
     console.log(`${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/inform_about_event/Quiz: ${course_name}/${start_date.toISOString()}/${end_date.toISOString()}`)
     fetch(`${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/inform_about_event/Quiz: ${course_name}/${start_date.toISOString()}/${end_date.toISOString()}`).then((response) => {

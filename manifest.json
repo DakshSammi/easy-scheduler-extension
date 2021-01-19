@@ -9,7 +9,7 @@
 	"content_scripts": [
 	    {
 	      "matches": ["https://classroom.google.com/*"],
-	      "js": ["js/globals.js", "js/classroom/suggestions.js", "js/classroom/get_suggestions.js", "js/classroom/suggestions_popup.js", "js/classroom/free_alert.js", "js/classroom/inform_about_quiz.js", "js/classroom/quiz_detection.js", "js/classroom/course_name_change.js", "js/classroom/main.js"],
+	      "js": ["js/globals.js", "js/classroom/suggestions.js", "js/classroom/get_suggestions.js", "js/classroom/suggestions_popup.js", "js/classroom/free_alert.js", "js/classroom/quiz_detection.js", "js/classroom/course_name_change.js", "js/classroom/main.js"],
 	      "css": ["css/classroom-styles.css"]
 		},
 		{   

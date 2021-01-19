@@ -1492,6 +1492,7 @@ class TagsPanel {
             input.setAttribute('placeholder', 'Date');
             input.setAttribute('type', 'text');
             input.setAttribute('style', 'padding-right:2px;');
+            input.setAttribute('id', 'examdate')
             inputGroupDatePicker.appendChild(input);
 
             var iconSpan = document.createElement('span');
