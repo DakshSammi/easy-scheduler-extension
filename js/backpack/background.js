@@ -20,7 +20,7 @@ function isLetter(str) {
 }
 
 function isQuizAnnouncement(content) {
-    var examSynonyms = ['quiz', 'assesment', 'examination', 'test', 'exam', 'midsem', 'endsem'];
+    var examSynonyms = ['quiz', 'assessment', 'examination', 'test', 'exam', 'midsem', 'endsem'];
     var words = content.toLowerCase().split(' ');
     for (let word of words) {
         if (word == ' ')
@@ -57,6 +57,7 @@ function getAnnouncementContentFromMessage(title, text) {
 
 function checkAnnouncementTags(title, text, callback) {
     var content = getAnnouncementContentFromMessage(title, text);
+    if(!content) return;
     extractDate(content).then((date) => {
         date.text().then((date) => {
             date = new Date(date);
@@ -79,17 +80,52 @@ function checkAnnouncementTags(title, text, callback) {
 // Inform the API regarding the upcoming quiz
 function informAboutQuiz(date) {
     var dateParts = date.split("/");
+
     var start_date = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0])
+
     var end_date = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0])
     end_date.setHours(end_date.getHours() + 1)
-    console.log(`${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/inform_about_event/Quiz: ${course_name}/${start_date.toISOString()}/${end_date.toISOString()}`)
-    fetch(`${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/inform_about_event/Quiz: ${course_name}/${start_date.toISOString()}/${end_date.toISOString()}`).then((response) => {
+
+    var request = `${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/inform_about_event/quiz/${course_name}/${start_date.toISOString()}/${end_date.toISOString()}`
+    console.log(request)
+    fetch_(request).then((response) => {
         return response.json();
     }).then((res) => {
         console.log(res)
     })
 }
 
+function informAboutDeadline(date) {
+    var start_date = new Date()
+
+    var dateParts = date.split("/");
+    var end_date = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0])
+
+    var request = `${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/inform_about_event/backpack_deadline/${course_name}/${start_date.toISOString()}/${end_date.toISOString()}`
+    console.log(request)
+    fetch_(request).then((response) => {
+        return response.json();
+    }).then((res) => {
+        console.log(res)
+    })
+
+}
+
+function informAboutDeadlineReminder(start_date, end_date) {
+    var dateParts = start_date.split("/");
+    var start_date = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0])
+
+    dateParts = end_date.split("/");
+    var end_date = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0])
+
+    var request = `${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/inform_about_event/backpack_deadline_reminder/${course_name}/${start_date.toISOString()}/${end_date.toISOString()}`
+    console.log(request)
+    fetch_(request).then((response) => {
+        return response.json();
+    }).then((res) => {
+        console.log(res)
+    })
+}
 
 function fetchSuggestions(days, hours, minDueDate, maxDueDate) {
     var durationStr = `${days}-${hours}-0`;

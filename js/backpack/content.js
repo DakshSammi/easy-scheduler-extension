@@ -478,7 +478,7 @@ function showSuggestions() {
         if (hoursInput.value === "")
             hoursInput.value = "0";
         setFetchSuggestionLoadingState();
-        fetchSuggestions(hoursInput.value, daysInput.value, minDueDate, maxDueDate).then((response) => {
+        fetchSuggestions(daysInput.value, hoursInput.value, minDueDate, maxDueDate).then((response) => {
             return response.json();
         }).then(onSuggestionsFetch)
 
