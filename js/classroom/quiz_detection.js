@@ -95,8 +95,9 @@ function informAboutQuiz(date) {
     var start_date = new Date(date)
     var end_date = new Date(date)
     end_date.setHours(end_date.getHours() + 1)
-    console.log(`${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/inform_about_event/Quiz: ${course_name}/${start_date.toISOString()}/${end_date.toISOString()}`)
-    fetch(`${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/inform_about_event/Quiz: ${course_name}/${start_date.toISOString()}/${end_date.toISOString()}`).then((response) => {
+    request = `${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/inform_about_event/quiz/${course_name}/${start_date.toISOString()}/${end_date.toISOString()}`
+    console.log(request)
+    fetch(request).then((response) => {
         return response.json();
     }).then((res) => {
         console.log(res)
