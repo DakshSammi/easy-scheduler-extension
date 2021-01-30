@@ -1,7 +1,6 @@
 examDate = null
 submitAnnouncememntListenerAdded = false
 submitDeadlineListenerAdded = false
-submitDeadlineReminderListenerAdded = false
 let observer = new MutationObserver((mutations) => {
     let url = window.location.toString()
     var urlComp = url.split('/')
@@ -14,7 +13,7 @@ let observer = new MutationObserver((mutations) => {
         }
     }
     alertBannerPrepared = false
-    if (urlComp[4] == "courses" && urlComp[6].substring(0, 13) == "announcements") {
+    if (urlComp[4] == "courses" && urlComp[6] && urlComp[6].substring(0, 13) == "announcements" && document.getElementById('announcement_no_show')) {
         updateDomAnnouncements()
     }
 
@@ -36,34 +35,17 @@ let observer = new MutationObserver((mutations) => {
 
     if(document.getElementById('submitdeadline')) {
         if(!submitDeadlineListenerAdded) {
+            console.log('listener added')
             submitDeadlineListenerAdded = true
             submitDeadlineButton = document.getElementById('submitdeadline')
             submitDeadlineButton.addEventListener("click", ()=>{
-                console.log(examDate)
-                if(examDate) {
-                    informAboutDeadline(examDate)
-                }
+                deadline_due_date = document.getElementById('deadline[date_part]').value
+                informAboutDeadline(deadline_due_date)
             })
         }
     } else {
         submitDeadlineListenerAdded = false
     }
-
-    if(document.getElementById('addReminder')) {
-        if(!submitDeadlineReminderListenerAdded) {
-            submitDeadlineReminderListenerAdded = true
-            submitDeadlineReminderButton = document.getElementById('addReminder')
-            submitDeadlineReminderButton.addEventListener("click", ()=>{
-                console.log(examDate)
-                if(examDate) {
-                    informAboutDeadlineReminder(examDate)
-                }
-            })
-        }
-    } else {
-        submitDeadlineReminderListenerAdded = false
-    }
-
 
     if(document.getElementById('examdate')) {
         examDate = document.getElementById('examdate').value

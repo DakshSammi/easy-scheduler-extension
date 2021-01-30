@@ -1,4 +1,4 @@
-var course_name = null;
+var course_name = 'CSE202 - Fundamentals of Database Management Systems';
 const DEADLINE_SCHEDULING_SUGGESTION_API = 'https://easyscheduler.kracr.iiitd.edu.in:8200'
 const COLLEGE_NAME = 'IIIT Delhi' 
 // const DEADLINE_SCHEDULING_SUGGESTION_API = 'https://deadline-scheduling-suggestion.herokuapp.com'

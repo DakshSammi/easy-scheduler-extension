@@ -177,8 +177,6 @@ function typeNowClicked() {
 
     var setReminderButton = document.getElementById('addReminder');
     setReminderButton.className = 'invisible';
-
-
 }
 
 function typeLaterClicked() {
@@ -251,12 +249,6 @@ function getScheduleTypeSelector() {
 function setReminderClicked() {
     if (setReminderButtonDisabled)
         return;
-    var heading = document.getElementsByClassName('cover-info').item(0).firstElementChild.firstElementChild;
-
-    var headingComp = heading.innerHTML.split(" ");
-    var coursecode = headingComp[1];
-
-    var assignmentName = document.getElementById('deadline_title').value;
 
     var releaseDate = document.getElementById("due-start").childNodes[0].childNodes[0].childNodes[0].value;
     var releaseTime = document.getElementById("due-start").childNodes[1].childNodes[0].childNodes[0].value;
@@ -265,8 +257,7 @@ function setReminderClicked() {
     var dueTime = document.getElementById("due-end").childNodes[1].childNodes[0].childNodes[0].value;
 
     setCreateReminderLoadingState();
-    chrome.runtime.sendMessage({ type: "setReminder", coursecode: coursecode, assignmentName: assignmentName, releaseDate: releaseDate, releaseTime: releaseTime, dueDate: dueDate, dueTime: dueTime });
-
+    informAboutDeadlineReminder(releaseDate, dueDate)
 }
 
 function insertAfter(newNode, referenceNode) {
@@ -406,8 +397,8 @@ function showNormalOptions() {
         schedulingPanel.removeChild(schedulingPanel.lastChild);
     schedulingPanel.appendChild(getHeaderRow("Due Date & Time"));
     schedulingPanel.appendChild(getPanelRow(getDateTimeSelector("normal-due")));
-    document.getElementById("normal-due").childNodes[0].childNodes[0].childNodes[0].setAttribute("name", "deadline[date_part]");
-    document.getElementById("normal-due").childNodes[1].childNodes[0].childNodes[0].setAttribute("name", "deadline[time_part]");
+    document.getElementById("normal-due").childNodes[0].childNodes[0].childNodes[0].setAttribute("id", "deadline[date_part]");
+    document.getElementById("normal-due").childNodes[1].childNodes[0].childNodes[0].setAttribute("id", "deadline[time_part]");
 
     var submitDeadlineButton = document.getElementById('submitdeadline');
     submitDeadlineButton.className = 'btn btn-primary pull-right';
@@ -474,13 +465,17 @@ function showSuggestions() {
             return ("" + arr[1] + "/" + arr[0] + "/" + arr[2]);
         }
         if (daysInput.value === "")
-            daysInput.value = "0";
+            daysInput.value = "0"
         if (hoursInput.value === "")
-            hoursInput.value = "0";
+            hoursInput.value = "0"
         setFetchSuggestionLoadingState();
         fetchSuggestions(daysInput.value, hoursInput.value, minDueDate, maxDueDate).then((response) => {
-            return response.json();
-        }).then(onSuggestionsFetch)
+            response.json().then((response) => {
+                scheduleResponse = response
+                console.log(scheduleResponse)
+                onSuggestionsFetch()
+            });
+        })
 
     }
 }
@@ -490,9 +485,9 @@ function repositionFooter() {
     var footer = document.getElementById('newFooter');
     var top = 0;
     if (mainCourseDiv.offsetHeight + 30 < 979)
-        top = 979;
+        top = 979
     else
-        top = mainCourseDiv.offsetHeight + 30;
+        top = mainCourseDiv.offsetHeight + 30
     footer.style.top = top + "px";
 }
 
@@ -672,6 +667,7 @@ function calculateOverlapPercentage(sd_1, ed_1, sd_2, ed_2) {
 }
 
 function selectSuggestion(suggestion) {
+    if(suggestion == null) return
     var selectedList = document.getElementsByClassName('suggestionCardSelected');
     for (var i = 0; i < selectedList.length; ++i) {
         selectedList.item(i).className = selectedList.item(i).className.replace('suggestionCardSelected', 'suggestionCard');
@@ -911,7 +907,7 @@ function getFlexibleDurationSelector() {
     return (typeSelectorContainer);
 }
 
-function onSuggestionsFetch(scheduleResponse) {
+function onSuggestionsFetch() {
     var id = 0;
     for (var i = 0; i < scheduleResponse.suggestions.length; ++i)
         scheduleResponse.suggestions[i].id = id++;
@@ -926,38 +922,32 @@ function onSuggestionsFetch(scheduleResponse) {
 
     schedulingPanel.appendChild(getHeaderRow("Deadline Release Date & Time"));
 
+    if(scheduleResponse.suggestions.length) {
+        var rowDiv = document.createElement('div');
+        rowDiv.setAttribute('style', "display:flex; width:100%");
+        rowDiv.appendChild(getScheduleTypeSelector());
+        rowDiv.appendChild(getDateTimeSelector("due-start"));
+        schedulingPanel.appendChild(getPanelRow(rowDiv));
 
-    var rowDiv = document.createElement('div');
-    rowDiv.setAttribute('style', "display:flex; width:100%");
-    rowDiv.appendChild(getScheduleTypeSelector());
-    rowDiv.appendChild(getDateTimeSelector("due-start"));
-    schedulingPanel.appendChild(getPanelRow(rowDiv));
+        schedulingPanel.appendChild(getHeaderRow("Deadline Due Date & Time"));
+        schedulingPanel.appendChild(getPanelRow(getDateTimeSelector("due-end")));
 
-    schedulingPanel.appendChild(getHeaderRow("Deadline Due Date & Time"));
-    schedulingPanel.appendChild(getPanelRow(getDateTimeSelector("due-end")));
+        document.getElementById("due-start").childNodes[0].childNodes[0].childNodes[0].value = parseDateInput(scheduleResponse.suggestions[0].start_date);
+        document.getElementById("due-start").childNodes[1].childNodes[0].childNodes[0].value = parseTime(scheduleResponse.suggestions[0].start_date);
 
-    document.getElementById("due-start").childNodes[0].childNodes[0].childNodes[0].value = parseDateInput(scheduleResponse.suggestions[0].start_date);
-    document.getElementById("due-start").childNodes[1].childNodes[0].childNodes[0].value = parseTime(scheduleResponse.suggestions[0].start_date);
+        document.getElementById("due-end").childNodes[0].childNodes[0].childNodes[0].value = parseDateInput(scheduleResponse.suggestions[0].end_date);
+        document.getElementById("due-end").childNodes[1].childNodes[0].childNodes[0].value = parseTime(scheduleResponse.suggestions[0].end_date);
 
-    document.getElementById("due-end").childNodes[0].childNodes[0].childNodes[0].value = parseDateInput(scheduleResponse.suggestions[0].end_date);
-    document.getElementById("due-end").childNodes[1].childNodes[0].childNodes[0].value = parseTime(scheduleResponse.suggestions[0].end_date);
+        document.getElementById("due-end").childNodes[0].childNodes[0].childNodes[0].setAttribute("name", "deadline[date_part]");
+        document.getElementById("due-end").childNodes[1].childNodes[0].childNodes[0].setAttribute("name", "deadline[time_part]");
+        repositionFooter();
 
-    document.getElementById("due-end").childNodes[0].childNodes[0].childNodes[0].setAttribute("name", "deadline[date_part]");
-    document.getElementById("due-end").childNodes[1].childNodes[0].childNodes[0].setAttribute("name", "deadline[time_part]");
-    repositionFooter();
-
-    showSuggestionMessage(scheduleResponse.suggestions[0]);
-    selectedFixedSchedule = scheduleResponse.suggestions[0];
-    selectedFlexibleSchedule = scheduleResponse.flexi_suggestions[0];
-}
-
-chrome.extension.onMessage.addListener(function (msg, sender, sendResponse) {
-    if (msg.type == 'setReminder') {
-        unsetCreateReminderLoadingState(msg.message);
-        var noShowDiv = document.getElementById('deadline_no_show');
-        noShowDiv.setAttribute('style', 'display:none;')
+        showSuggestionMessage(scheduleResponse.suggestions[0]);
+        selectedFixedSchedule = scheduleResponse.suggestions[0];
+        selectedFlexibleSchedule = scheduleResponse.flexi_suggestions[0];        
     }
-});
+
+}
 
 function setFetchSuggestionLoadingState() {
     fetchSchedulesButtonDisabled = true;
@@ -986,7 +976,7 @@ function setCreateReminderLoadingState() {
     setReminderButtonLoader.className = 'computeButtonLoader';
 }
 
-function unsetCreateReminderLoadingState(message) {
+function unsetCreateReminderLoadingState() {
     setReminderButtonDisabled = false;
 
     var setReminderButton = document.getElementById('addReminder');
@@ -996,7 +986,6 @@ function unsetCreateReminderLoadingState(message) {
     setReminderButtonLoader.className = 'invisible';
 
     resetSchedulePanel();
-    showAlertMessage(`<span style="font-size:25px; margin-right:10px;">&#10003;</span> Reminder set for deadline "${message.assignmentName}" to be released on ${message.dueDate}`, "success", 4500);
 }
 
 function showAlertMessage(message, type, duration) {

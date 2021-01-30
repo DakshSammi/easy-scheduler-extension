@@ -57,24 +57,29 @@ function getAnnouncementContentFromMessage(title, text) {
 
 function checkAnnouncementTags(title, text, callback) {
     var content = getAnnouncementContentFromMessage(title, text);
-    if(!content) return;
-    extractDate(content).then((date) => {
-        date.text().then((date) => {
-            date = new Date(date);
-            if (isQuizAnnouncement(content)) {
+    if (isQuizAnnouncement(content)) {
+        extractDate(content).then((date) => {
+            date.text().then((date) => {
+                date = new Date(date);
                 tags = [{
                     name: 'Exam Announcement',
                     attr1: date.getTime()
                 }
                 ];
-                callback(tags);
+                callback(tags)
+            })
+        }).catch ((err) => {
+            console.log(err)
+            tags = [{
+                name: 'Exam Announcement',
+                attr1: null
             }
-            else {
-                callback([])
-            }
-
-        })
-    });   
+            ];
+            callback(tags)
+            })
+    } else {
+        callback([])
+    }
 }
 
 // Inform the API regarding the upcoming quiz
@@ -89,7 +94,7 @@ function informAboutQuiz(date) {
     var request = `${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/inform_about_event/quiz/${course_name}/${start_date.toISOString()}/${end_date.toISOString()}`
     console.log(request)
     fetch_(request).then((response) => {
-        return response.json();
+        return response.text();
     }).then((res) => {
         console.log(res)
     })
@@ -104,7 +109,7 @@ function informAboutDeadline(date) {
     var request = `${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/inform_about_event/backpack_deadline/${course_name}/${start_date.toISOString()}/${end_date.toISOString()}`
     console.log(request)
     fetch_(request).then((response) => {
-        return response.json();
+        return response.text();
     }).then((res) => {
         console.log(res)
     })
@@ -121,9 +126,10 @@ function informAboutDeadlineReminder(start_date, end_date) {
     var request = `${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/inform_about_event/backpack_deadline_reminder/${course_name}/${start_date.toISOString()}/${end_date.toISOString()}`
     console.log(request)
     fetch_(request).then((response) => {
-        return response.json();
+        return response.text();
     }).then((res) => {
-        console.log(res)
+        alert(res)
+        unsetCreateReminderLoadingState()
     })
 }
 
@@ -134,7 +140,7 @@ function fetchSuggestions(days, hours, minDueDate, maxDueDate) {
 
     // API call fetch schedules
 
-    var request=`${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/get_suggestions/CSE202 - Fundamentals of Database Management Systems/${durationStr}/${minScheduleStr}/${maxScheduleStr}`;
+    var request=`${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/get_suggestions/${course_name}/${durationStr}/${minScheduleStr}/${maxScheduleStr}`;
     console.log(request);
     return fetch_(request);
 }
