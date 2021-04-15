@@ -3,9 +3,6 @@
 	"version": "2",
 	"description": "Adds the functionality of obtaining the best deadline release and due dates based on student workload of other courses.",
 	"manifest_version": 2,
-	"permissions": [
-	    "tabs"
-	],
 	"content_scripts": [
 	    {
 	      "matches": ["https://classroom.google.com/*"],
