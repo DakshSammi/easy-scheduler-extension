@@ -34,20 +34,20 @@ function observeAnnouncement(node) {
 	})
 }
 
-function observeCourseName() {
-	var course_name_node = document.getElementsByClassName('wy758b')[0].childNodes[0].childNodes[0];
-	var course_name_node_2 = document.getElementsByClassName('wy758b')[0].childNodes[0].childNodes[1];
-	if(course_name_node == null) return;
-	temp = course_name_node.childNodes[0].data;
-	if(course_name_node_2 != null && course_name_node_2.childNodes[0].data != null) {
-		temp += ' ' + course_name_node_2.childNodes[0].data;
-	}
-	if(course_name_node != null && course_name != temp && is_instructor) {
-		course_name = temp;
-		console.log(course_name);
-		onCourseNameChange(course_name)
-	}
-}
+// function observeCourseName() {
+// 	var course_name_node = document.getElementsByClassName('wy758b')[0].childNodes[0].childNodes[0];
+// 	var course_name_node_2 = document.getElementsByClassName('wy758b')[0].childNodes[0].childNodes[1];
+// 	if(course_name_node == null) return;
+// 	temp = course_name_node.childNodes[0].data;
+// 	if(course_name_node_2 != null && course_name_node_2.childNodes[0].data != null) {
+// 		temp += ' ' + course_name_node_2.childNodes[0].data;
+// 	}
+// 	if(course_name_node != null && course_name != temp && is_instructor) {
+// 		course_name = temp;
+// 		console.log(course_name);
+// 		onCourseNameChange(course_name)
+// 	}
+// }
 
 observer.observe(document.body, {
 	childList: true,

@@ -23,6 +23,25 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 
+function fetchCourseNames() {
+	while(course_selection_dropdown.childNodes.length > 0) course_selection_dropdown.removeChild(course_selection_dropdown.childNodes[0]);
+	let base_url = `${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/courses`;
+	console.log(base_url);
+	const fetchPromise = fetch_(base_url);
+	fetchPromise.then((response) => {
+		return response.json();
+	}).then((res) => {
+		console.log(res);
+		for(var id in res) {
+			var course = document.createElement("option");
+			course.value = id;
+			course.appendChild(document.createTextNode(res[id]));
+			course_selection_dropdown.appendChild(course);
+		}
+	})
+
+}
+
 function fetchSuggestions() {
 	error_message.style.display = 'none'		
 	var duration = [];
@@ -33,6 +52,7 @@ function fetchSuggestions() {
 
 	console.log(duration);
 
+	var course_id = course_selection_dropdown.value;
 	var min_due_date = min_due_date_input.value;
 	var max_due_date = max_due_date_input.value;
 	console.log(min_due_date);
@@ -41,7 +61,7 @@ function fetchSuggestions() {
 	var max_date = new Date(max_due_date);
 	console.log(dateDiffInDays(min_date, max_date));
 
-	let base_url = `${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/get_suggestions/${course_name}/${duration[0]}-${duration[1]}-0/${min_due_date}T00:00:00.000Z/${max_due_date}T00:00:00.000Z`;
+	let base_url = `${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/get_suggestions/${course_id}/${duration[0]}-${duration[1]}-0/${min_due_date}T00:00:00.000Z/${max_due_date}T00:00:00.000Z`;
 	console.log(base_url);
 
 	const fetchPromise = fetch_(base_url);
@@ -69,41 +89,6 @@ function fetchSuggestions() {
 			all_suggestions.appendChild(flexi_suggestions);
 		}
 
-		var new_min_due_date = max_due_date;
-		var new_max_due_date = formatDate(addDays(max_due_date, 20));
-		var extra_date;
-		let url = `${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/get_suggestions/${course_name}/${duration[0]}-${duration[1]}-0/${new_min_due_date}T00:00:00.000Z/${new_max_due_date}T00:00:00.000Z`;
-		const promise = fetch_(url);
-		promise.then((response) => {
-			return response.json();
-		}).then((res) => {
-			var extra_suggestions = res["suggestions"];
-			var extra_flexi_suggestions = res["flexi_suggestions"];
-			console.log(extra_suggestions);
-			console.log(extra_flexi_suggestions);
-			for (var i in extra_suggestions) {
-				if (extra_suggestions[i]['clash']['score'] < 2) {
-					extra_date = extra_suggestions[i]['start_date'];
-					extra_date = formatDate(extra_date);
-					break;
-				}
-			}
-			for (var i in extra_flexi_suggestions) {
-				if (extra_flexi_suggestions[i]['clash']['score'] < 2) {
-					var temp = extra_flexi_suggestions[i]['start_date'];
-					temp = formatDate(temp);
-					if (new Date(extra_date) - new Date(temp) >= 0) {
-						temp = extra_date;
-					}
-					break;
-				}
-			}
-		}).catch(err => {
-		    console.error(err)
-			get_suggestions.style.display = 'block'
-			get_suggestions_loading.style.display = 'none'
-		    error_message.style.display = 'block'
-		})
 	}).catch(err => {
 	    console.error(err)
 		get_suggestions.style.display = 'block'

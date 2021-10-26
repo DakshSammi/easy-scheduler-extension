@@ -17,6 +17,18 @@ function createButton(text, onclick) {
   return new_button;
 }
 
+// course selection dropdown
+var course_selection_div = document.createElement("div");
+course_selection_div.className = "inputCell"
+var course_selection_title = document.createElement("p");
+course_selection_div.appendChild(course_selection_title);
+course_selection_title.appendChild(document.createTextNode("Course"))
+course_selection_title.className = HEADING_CLASS;
+var course_selection_dropdown = document.createElement("select");
+course_selection_dropdown.className = "input";
+course_selection_div.appendChild(course_selection_dropdown);
+
+
 // duration
 var duration_div = document.createElement("div");
 duration_div.className = "inputCell";
@@ -166,10 +178,12 @@ legend.appendChild(bad)
 // all inputs
 var all_inputs = document.createElement("div");
 all_inputs.className = "flexBox";
+all_inputs.appendChild(course_selection_div);
+course_selection_div.style.flex = 0.3
 all_inputs.appendChild(duration_div);
-duration_div.style.flex = 0.4;
+duration_div.style.flex = 0.3;
 all_inputs.appendChild(dates);
-dates.style.flex = 0.6;
+dates.style.flex = 0.3;
 
 // showing all suggestions
 var all_suggestions = document.createElement("div");
@@ -199,12 +213,13 @@ popup.appendChild(popup_span);
 var open_suggestions_popup = createButton("Get Due Date Suggestions", () => {
   if(all_suggestions.childNodes.length > 0) all_suggestions.removeChild(all_suggestions.childNodes[0]);
   if(all_suggestions.childNodes.length > 0) all_suggestions.removeChild(all_suggestions.childNodes[0]);
-  popup.style.display = "block"
+  fetchCourseNames();
+  popup.style.display = "block";
 });
 
 // close popup on click
 var close_popup = createButton("Close", () => {
-  popup.style.display = "none"
+  popup.style.display = "none";
 });
 
 popup_content.appendChild(close_popup);
