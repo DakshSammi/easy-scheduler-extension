@@ -213,7 +213,7 @@ popup.appendChild(popup_span);
 var open_suggestions_popup = createButton("Get Due Date Suggestions", () => {
   if(all_suggestions.childNodes.length > 0) all_suggestions.removeChild(all_suggestions.childNodes[0]);
   if(all_suggestions.childNodes.length > 0) all_suggestions.removeChild(all_suggestions.childNodes[0]);
-  fetchCourseNames();
+  fetchCourseNames(course_selection_dropdown);
   popup.style.display = "block";
 });
 

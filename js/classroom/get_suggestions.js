@@ -23,7 +23,8 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 
-function fetchCourseNames() {
+function fetchCourseNames(course_selection_dropdown) {
+	console.log(course_selection_dropdown)
 	while(course_selection_dropdown.childNodes.length > 0) course_selection_dropdown.removeChild(course_selection_dropdown.childNodes[0]);
 	let base_url = `${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/courses`;
 	console.log(base_url);

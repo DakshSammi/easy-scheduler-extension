@@ -1,9 +1,16 @@
-var is_instructor = null;
+var is_instructor = true;
 
 var announcement_box = null;
+var announcement_text = null;
+var checked_announcement = false;
 
 let observer = new MutationObserver((mutations) => {
 	mutations.forEach((mutation) => {
+		mutation.removedNodes.forEach(node => {
+			if(node.ariaLabel == 'Announce something to your class') {
+				announcement_text = null;
+			}	
+		});
 		if (!mutation.addedNodes) return;
 		for (let i = 0; i < mutation.addedNodes.length; i++) {
 			let node = mutation.addedNodes[i];
@@ -15,23 +22,26 @@ let observer = new MutationObserver((mutations) => {
 			if(node.className=='u2mfde hN1OOc EZrbnd J1raN S6Vdac' && node.parentNode.parentNode.childElementCount==4) {
 				is_instructor = true;
 			}
-			if(node.className == 'QRiHXd ') {
-				observeAnnouncement(node)
-			}
-			if(node.className == 'hqfVKd tL9Q4c') {
-				announcement_box = node
+			if(node.ariaLabel == 'Announce something to your class') {
+				announcement_box = node;
 			}
 		}
 	});
 });
 
-function observeAnnouncement(node) {
-	node.addEventListener('click', () => {
-		announcement = announcement_box.childNodes[0].data.toLowerCase()
-		if(announcement.includes('quiz')) {
-			document.body.appendChild(createQuizPopup())
+function observeAnnouncement() {
+	if(announcement_box != null && announcement_text != announcement_box.textContent) {
+		announcement_text = announcement_box.textContent;
+		if(announcement_text.toLowerCase().includes('quiz')) {
+			if(!checked_announcement) {
+				document.body.appendChild(createQuizPopup())
+				checked_announcement = true;
+			}
+		} else {
+			checked_announcement = false;
 		}
-	})
+	}
+
 }
 
 // function observeCourseName() {
@@ -56,4 +66,4 @@ observer.observe(document.body, {
 	characterData: true,
 });
 
-setInterval(observeCourseName, 1000);
+setInterval(observeAnnouncement, 100);
