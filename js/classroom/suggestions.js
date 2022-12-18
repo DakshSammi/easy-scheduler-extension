@@ -1,5 +1,8 @@
-const BUTTON_CLASS = "U26fgb cd29Sd p0oLxb BEAGS CG2qQ QRiHXd bVp04e center";
-const HEADING_CLASS = "gtuckc tLDEHd-Wvd9Cc";
+// const BUTTON_CLASS = "U26fgb cd29Sd p0oLxb BEAGS CG2qQ QRiHXd bVp04e center";
+const BUTTON_CLASS  = "U26fgb cd29Sd p0oLxb BEAGS nmr34b RDPZE center";
+// const HEADING_CLASS = "gtuckc tLDEHd-Wvd9Cc";
+const HEADING_CLASS = "gtuckc iLjzDc";
+
 
 const LESS_SUGGESTIONS = 6
 
