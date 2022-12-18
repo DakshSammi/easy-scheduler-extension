@@ -14,7 +14,7 @@ let observer = new MutationObserver((mutations) => {
 		if (!mutation.addedNodes) return;
 		for (let i = 0; i < mutation.addedNodes.length; i++) {
 			let node = mutation.addedNodes[i];
-			if (node.className == HEADING_CLASS && node.childNodes[0].data == "Due") {
+			if (node.className == "gtuckc iLjzDc" && node.childNodes[0].data == "Due") {
 				let parent = node.parentNode;
 				parent.insertBefore(open_suggestions_popup, node);
 				parent.insertBefore(popup, node);
