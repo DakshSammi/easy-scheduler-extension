@@ -111,10 +111,26 @@ function informAboutQuiz(date) {
     var start_date = new Date(date)
     var end_date = new Date(date)
     end_date.setHours(end_date.getHours() + 1)
-    request = `${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/inform_about_event/quiz/${quiz_course_selection_dropdown.value}/${start_date.toISOString()}/${end_date.toISOString()}`
-    console.log(request)
-    fetch(request).then((response) => {
-        console.log(response.data)
-    }).then((res) => {
-    })
+    // request = `${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/inform_about_event/quiz/${quiz_course_selection_dropdown.value}/${start_date.toISOString()}/${end_date.toISOString()}`
+    // console.log(request)
+    // fetch(request).then((response) => {
+    //     console.log(response.data)
+    // }).then((res) => {
+    // })
+	// Send a request to your API to inform it about the quiz.
+    var request = `${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/inform_about_quiz/${quiz_course_selection_dropdown.value}/${start_date.toISOString()}/${end_date.toISOString()}`;
+    
+    fetch(request)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Network response was not ok.');
+        })
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
