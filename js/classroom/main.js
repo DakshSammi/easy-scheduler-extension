@@ -109,12 +109,38 @@ function calculateQuizCompletionRate(data, quizId) {
     return completionRate;
 }
 
+// Function to check for a quiz clash and show an alert
+function checkForQuizClash(assignmentId, quizId, assignmentData, quizData) {
+    // Find the quiz and assignment data using their IDs
+    const quiz = quizData.find(q => q.quiz_id === quizId);
+    const assignment = assignmentData.find(a => a.id === assignmentId);
+
+    // Check if the quiz date is close to the assignment deadline
+    const quizDate = new Date(quiz.deadline);
+    const assignmentDeadline = new Date(assignment.deadline);
+    const timeDiff = Math.abs(quizDate - assignmentDeadline);
+    const diffDays = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+    if (diffDays <= 2) { // Assuming "close" means within 2 days
+        alert('Quiz Clash Alert: There is a potential clash between a quiz and an assignment. Please reschedule accordingly.');
+    }
+}
+
 // Main function to fetch data and calculate the completion rate
 async function main() {
     const apiUrl = 'https://my.api.mockaroo.com/a_completion.json';
     const data = await fetchAppropriateData(apiUrl);
     const qapir = 'https://my.api.mockaroo.com/q_completion.json';
     const qdata = await fetchAppropriateData(qapir);
+    const assignmentApiUrl = 'https://my.api.mockaroo.com/assignment.json';
+    const quizApiUrl = 'https://my.api.mockaroo.com/quiz.json';
+    const assignmentData = await fetchAppropriateData(assignmentApiUrl);
+    const quizData = await fetchAppropriateData(quizApiUrl);
+    const assignmentIdToCheck = '833';
+    const quizIdToCheck = '723';
+    if (assignmentData && quizData) {
+        checkForQuizClash(quizIdToCheck, assignmentIdToCheck, assignmentData, quizData);
+    }
     if (data || qdata) {
         // Replace '888' with the actual assignment/quiz ID you want to check
         const completionRate = calculateAssignmentCompletionRate(data, '888');
