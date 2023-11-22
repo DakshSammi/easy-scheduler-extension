@@ -126,6 +126,21 @@ function checkForQuizClash(assignmentId, quizId, assignmentData, quizData) {
     }
 }
 
+// Function to check for student inactivity and show an alert
+function checkForStudentInactivity(studentData, quizSubmissionsData, assignmentSubmissionsData) {
+    const allStudentIds = new Set(studentData.map(student => student.student_id));
+    const studentsWithQuizSubmissions = new Set(quizSubmissionsData.map(submission => submission.student_id));
+    const studentsWithAssignmentSubmissions = new Set(assignmentSubmissionsData.map(submission => submission.student_id));
+
+    const inactiveStudents = [...allStudentIds].filter(studentId => {
+        return !studentsWithQuizSubmissions.has(studentId) && !studentsWithAssignmentSubmissions.has(studentId);
+    });
+
+    if (inactiveStudents.length > 0) {
+        alert(`Inactive Students Alert: The following students have not submitted any quiz or assignment for a long duration: ${inactiveStudents.join(', ')}.`);
+    }
+}
+
 // Main function to fetch data and calculate the completion rate
 async function main() {
     const apiUrl = 'https://my.api.mockaroo.com/a_completion.json';
@@ -138,6 +153,21 @@ async function main() {
     const quizData = await fetchAppropriateData(quizApiUrl);
     const assignmentIdToCheck = '833';
     const quizIdToCheck = '723';
+
+    // Fetch data for the student, quiz submissions, and assignment submissions
+    const studentApiUrl = 'https://my.api.mockaroo.com/students.json';
+    const quizSubmissionsApiUrl = 'https://my.api.mockaroo.com/quiz_submissions.json';
+    const assignmentSubmissionsApiUrl = 'https://my.api.mockaroo.com/submissions.json';
+
+    const studentData = await fetchAppropriateData(studentApiUrl);
+    const quizSubmissionsData = await fetchAppropriateData(quizSubmissionsApiUrl);
+    const assignmentSubmissionsData = await fetchAppropriateData(assignmentSubmissionsApiUrl);
+
+    if (studentData && quizSubmissionsData && assignmentSubmissionsData) {
+        // Check for student inactivity and show alert if needed
+        checkForStudentInactivity(studentData, quizSubmissionsData, assignmentSubmissionsData);
+    }
+
     if (assignmentData && quizData) {
         checkForQuizClash(quizIdToCheck, assignmentIdToCheck, assignmentData, quizData);
     }
