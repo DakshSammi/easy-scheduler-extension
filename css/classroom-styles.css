@@ -207,7 +207,7 @@
   
   .notification {
 	position: fixed;
-	top: 25%;
+	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	background-color: #0f9d58;
@@ -218,8 +218,9 @@
 	padding: 8px;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	width: 60vw;
-	height: 15vh;
+	height: 40vh;
 	font-size: 1.2rem;
 	text-align: center;
+	z-index: 100;
   }
   

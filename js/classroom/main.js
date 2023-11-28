@@ -118,33 +118,33 @@ function observeAnnouncement() {
   }
 }
 
-// Function to fetch appropriate data from the API or local datasets
+// Function to fetch data from the fallback URL if API request fails
 async function fetchAppropriateData(apiUrl, fallbackUrl) {
-  try {
-    const response = await fetch(apiUrl, {
-      headers: {
-        'X-API-Key': '018aac80'
-      }
-    });
+  // try {
+  //   const response = await fetch(apiUrl, {
+  //     headers: {
+  //       'X-API-Key': '018aac80'
+  //     }
+  //   });
 
-    if (response.ok) {
-      const data = await response.json();
-      return data;
+  //   if (response.ok) {
+  //     const data = await response.json();
+  //     return data;
+  //   }
+
+  //   console.warn('API request failed. Attempting to fetch from local dataset...');
+    const fallbackResponse = await fetch(fallbackUrl);
+
+    if (fallbackResponse.ok) {
+      const fallbackData = await fallbackResponse.json();
+      return fallbackData;
     } else {
-      // If API request fails, try fetching from local dataset
-      console.warn('API request failed. Attempting to fetch from local dataset...');
-      const fallbackResponse = await fetch(fallbackUrl);
-      if (fallbackResponse.ok) {
-        const fallbackData = await fallbackResponse.json();
-        return fallbackData;
-      } else {
-        throw new Error('Failed to fetch data from both API and local dataset.');
-      }
+      throw new Error('Failed to fetch data from both API and local dataset.');
     }
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    return null;
-  }
+  // } catch (error) {
+  //   console.error('Error fetching data:', error);
+  //   return null;
+  // }
 }
 
 function showNotification(message) {
@@ -326,34 +326,47 @@ async function main() {
   const quizSubmissionsData = await fetchAppropriateData(quizSubmissionsApiUrl, quizSubmissionsFallbackUrl);
   const assignmentSubmissionsData = await fetchAppropriateData(assignmentSubmissionsApiUrl, assignmentSubmissionsFallbackUrl);
 
-  if (studentData && quizSubmissionsData && assignmentSubmissionsData) {
+  if (studentData && quizSubmissionsData && assignmentSubmissionsData) {//working
     // Check for student inactivity and show alert if needed
     checkForStudentInactivity(studentData, quizSubmissionsData, assignmentSubmissionsData);
   }
-  if (data && qdata) {
-    // Replace '888' with the actual assignment/quiz ID you want to check
-    const completionRate = calculateAssignmentCompletionRate(data, 888);
-    const qcompletionRate = calculateQuizCompletionRate(qdata, 888);
-    //console.log(`Assignment completion rate: ${completionRate.toFixed(2)}%`);
-    // Show an alert to the professor if completion rate is > 70% or < 30%
-    if (completionRate > 70) {
-      const message = `Assignment completion rate is ${completionRate}%. No need to extend the deadline. New Assignment can be scheduled!`;
-      showNotification(message);
-    } else if (completionRate < 30) {
-      const message = `Assignment completion rate is ${completionRate}%. You may need to extend the deadline. New Assignment cannot be scheduled!`;
-      showNotification(message);
-    }
-    //console.log(`Quiz completion rate: ${qcompletionRate.toFixed(2)}%`);
-    // Show an alert to the professor if completion rate is > 70% or < 30%
-    if (qcompletionRate > 70) {
-      const message = `Quiz completion rate is ${qcompletionRate}%. No need to extend the deadline. New Quiz can be scheduled!`;
-      showNotification(message);
-    } else if (qcompletionRate < 30) {
-      const message = `Quiz completion rate is ${qcompletionRate}%. You may need to extend the deadline. New Quiz cannot be scheduled!`;
-      showNotification(message);
+  if (data) {
+    // Replace '888' with the actual assignment ID you want to check
+    const assignmentIdToCheck = 205; // Replace with the actual assignment ID
+    const completionRate = calculateAssignmentCompletionRate(data, assignmentIdToCheck);
+  
+    // Notify about Assignment completion rate
+    if (completionRate !== null) {
+      if (completionRate > 70) {
+        const message = `Assignment completion rate is ${completionRate}%. No need to extend the deadline. New Assignment can be scheduled!`;
+        showNotification(message);
+      } else if (completionRate < 30) {
+        const message = `Assignment completion rate is ${completionRate}%. You may need to extend the deadline. New Assignment cannot be scheduled!`;
+        showNotification(message);
+      } else {
+        const message = `Assignment completion rate is ${completionRate}%. You may need to extend the deadline. New Assignment can be scheduled!`;
+        showNotification(message);
+      }
     }
   }
-  if (assignmentData && quizData) {
+  
+  if (qdata) {
+    // Replace '888' with the actual quiz ID you want to check
+    const quizIdToCheck = 888; // Replace with the actual quiz ID
+    const qcompletionRate = calculateQuizCompletionRate(qdata, quizIdToCheck);
+  
+    // Notify about Quiz completion rate
+    if (qcompletionRate !== null) {
+      if (qcompletionRate > 70) {
+        const message = `Quiz completion rate is ${qcompletionRate}%. No need to extend the deadline. New Quiz can be scheduled!`;
+        showNotification(message);
+      } else if (qcompletionRate < 30) {
+        const message = `Quiz completion rate is ${qcompletionRate}%. You may need to extend the deadline. New Quiz cannot be scheduled!`;
+        showNotification(message);
+      }
+    }
+  }
+  if (assignmentData && quizData) {//working
     checkForQuizClash(
       quizIdToCheck,
       assignmentIdToCheck,
