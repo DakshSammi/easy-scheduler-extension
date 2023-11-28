@@ -195,6 +195,19 @@ function showNotification(message) {
 
 // }
 
+function calculateAverageScore(scores) {
+  const totalScores = scores.reduce((sum, score) => sum + score, 0);
+  return totalScores / scores.length;
+}
+
+function checkLowScores(scores, threshold, type) {
+  const averageScore = calculateAverageScore(scores);
+  if (averageScore < threshold) {
+    const message = `Low ${type} Scores Alert: The average ${type} score is ${averageScore}. Many students are performing poorly. Consider reviewing the material or offering additional support.`;
+    showNotification(message);
+  }
+}
+
 function calculateAssignmentCompletionRate(data, assignmentId) {
   // Assuming your data structure matches the provided schema
   const submissions = data.filter(
@@ -348,6 +361,18 @@ async function main() {
         showNotification(message);
       }
     }
+    // Fetch assignment scores for the assignment ID
+    const assignmentScoresApiUrl = 'https://raw.githubusercontent.com/DakshSammi/easy-scheduler-extension/master/js/classroom/a-score.json';
+    const assignmentScoresFallbackUrl = 'https://raw.githubusercontent.com/DakshSammi/easy-scheduler-extension/master/js/classroom/a-score.json';
+    const assignmentScoresData = await fetchAppropriateData(assignmentScoresApiUrl, assignmentScoresFallbackUrl);
+
+    if (assignmentScoresData) {
+      const assignmentScores = assignmentScoresData
+        .filter((entry) => entry.assignment_id === 692)
+        .map((entry) => entry.score);
+
+      checkLowScores(assignmentScores, 50, 'Assignment');
+    } 
   }
   
   if (qdata) {
@@ -364,9 +389,33 @@ async function main() {
         const message = `Quiz completion rate is ${qcompletionRate}%. You may need to extend the deadline. New Quiz cannot be scheduled!`;
         showNotification(message);
       }
+      // Fetch quiz scores for the quiz ID
+      const quizScoresApiUrl = 'https://raw.githubusercontent.com/DakshSammi/easy-scheduler-extension/master/js/classroom/q_score.json';
+      const quizScoresFallbackUrl = 'https://raw.githubusercontent.com/DakshSammi/easy-scheduler-extension/master/js/classroom/q_score.json';
+      const quizScoresData = await fetchAppropriateData(quizScoresApiUrl, quizScoresFallbackUrl);
+
+      if (quizScoresData) {
+        const quizScores = quizScoresData
+          .filter((entry) => entry.quiz_id === quizIdToCheck)
+          .map((entry) => entry.score);
+
+        checkLowScores(quizScores, 50, 'Quiz');
+      }
     }
+    // Fetch assignment scores for the assignment ID
+    const assignmentScoresApiUrl = 'https://raw.githubusercontent.com/DakshSammi/easy-scheduler-extension/master/js/classroom/a-score.json';
+    const assignmentScoresFallbackUrl = 'https://raw.githubusercontent.com/DakshSammi/easy-scheduler-extension/master/js/classroom/a-score.json';
+    const assignmentScoresData = await fetchAppropriateData(assignmentScoresApiUrl, assignmentScoresFallbackUrl);
+
+    if (assignmentScoresData) {
+      const assignmentScores = assignmentScoresData
+        .filter((entry) => entry.assignment_id === assignmentIdToCheck)
+        .map((entry) => entry.score);
+
+      checkLowScores(assignmentScores, 50, 'Assignment');
+    }  
   }
-  if (assignmentData && quizData) {//working
+  if (assignmentData && quizData) {
     checkForQuizClash(
       quizIdToCheck,
       assignmentIdToCheck,
