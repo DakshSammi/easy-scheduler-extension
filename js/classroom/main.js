@@ -300,15 +300,15 @@ function checkForStudentInactivity(
 // Main function to fetch data and calculate the completion rate
 async function main() {
   const apiUrl = 'https://my.api.mockaroo.com/a_completion.json';
-  const fallbackUrl = 'a-completion.json';
+  const fallbackUrl = 'https://raw.githubusercontent.com/DakshSammi/easy-scheduler-extension/master/js/classroom/a-completion.json';
   const data = await fetchAppropriateData(apiUrl, fallbackUrl);
   const qapir = 'https://my.api.mockaroo.com/q_completion.json';
-  const qfallbackUrl = 'q-completion.json';
+  const qfallbackUrl = 'https://raw.githubusercontent.com/DakshSammi/easy-scheduler-extension/master/js/classroom/q-completion.json';
   const qdata = await fetchAppropriateData(qapir, qfallbackUrl);
   const assignmentApiUrl = 'https://my.api.mockaroo.com/assignment.json';
-  const assignmentFallbackUrl = 'assignment.json';
+  const assignmentFallbackUrl = 'https://raw.githubusercontent.com/DakshSammi/easy-scheduler-extension/master/js/classroom/assignment.json';
   const quizApiUrl = 'https://my.api.mockaroo.com/quiz.json';
-  const quizFallbackUrl = 'quiz.json';
+  const quizFallbackUrl = 'https://raw.githubusercontent.com/DakshSammi/easy-scheduler-extension/master/js/classroom/quiz.json';
   const assignmentData = await fetchAppropriateData(assignmentApiUrl, assignmentFallbackUrl);
   const quizData = await fetchAppropriateData(quizApiUrl, quizFallbackUrl);
   const assignmentIdToCheck = 833;
@@ -316,11 +316,11 @@ async function main() {
   //eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiemlwIjoiREVGIn0.SpN6Po86vfHTAvY3FmJndfGfVcep3HnZQGSj56L_fo3ehUt9i-Zo096-lUl6ndBlk8AMh0Z9SZoGXBPcPz9HunPTO9gIDNJz.aK5Hx1VfYKMol1SSPsjIPA.PuGBvWQs2nyRlIRl0UJp46r7qftk3m_CVNjqP0hNxfyllgmiI5j3QPkHSqGyNeJGwHlGxAGHWR4YJDdHg1jEVeNTOlg-fODmo5o3p47ws-mmyuKIv5eUYpLBSBIb0yB_pZn-Wh0-9LTzIp2LJoTi8Q-P0VfDBxgK-yXdsCovdfY.TkYrTTSwRUcrRCEqVNwY_xDCAEmfiikckH-NeEGJmJc
   // Fetch data for the student, quiz submissions, and assignment submissions
   const studentApiUrl = "https://my.api.mockaroo.com/students.json";
-  const studentFallbackUrl = "students.json";
+  const studentFallbackUrl = "https://raw.githubusercontent.com/DakshSammi/easy-scheduler-extension/master/js/classroom/students.json";
   const quizSubmissionsApiUrl = "https://my.api.mockaroo.com/quiz_submissions.json";
-  const quizSubmissionsFallbackUrl = "quiz-submissions.json";
+  const quizSubmissionsFallbackUrl = "https://raw.githubusercontent.com/DakshSammi/easy-scheduler-extension/master/js/classroom/quiz_submissions.json";
   const assignmentSubmissionsApiUrl = "https://my.api.mockaroo.com/submissions.json";
-  const assignmentSubmissionsFallbackUrl = "submissions.json";
+  const assignmentSubmissionsFallbackUrl = "https://raw.githubusercontent.com/DakshSammi/easy-scheduler-extension/master/js/classroom/submissions.json";
 
   const studentData = await fetchAppropriateData(studentApiUrl, studentFallbackUrl);
   const quizSubmissionsData = await fetchAppropriateData(quizSubmissionsApiUrl, quizSubmissionsFallbackUrl);
@@ -328,33 +328,29 @@ async function main() {
 
   if (studentData && quizSubmissionsData && assignmentSubmissionsData) {
     // Check for student inactivity and show alert if needed
-    checkForStudentInactivity(
-      studentData,
-      quizSubmissionsData,
-      assignmentSubmissionsData
-    )
+    checkForStudentInactivity(studentData, quizSubmissionsData, assignmentSubmissionsData);
   }
   if (data && qdata) {
     // Replace '888' with the actual assignment/quiz ID you want to check
-    const completionRate = calculateAssignmentCompletionRate(data, 888)
-    const qcompletionRate = calculateQuizCompletionRate(qdata, 888)
+    const completionRate = calculateAssignmentCompletionRate(data, 888);
+    const qcompletionRate = calculateQuizCompletionRate(qdata, 888);
     //console.log(`Assignment completion rate: ${completionRate.toFixed(2)}%`);
     // Show an alert to the professor if completion rate is > 70% or < 30%
     if (completionRate > 70) {
-      const message = `Assignment completion rate is ${completionRate}%. No need to extend the deadline. New Assignment can be scheduled!`
-      showNotification(message)
+      const message = `Assignment completion rate is ${completionRate}%. No need to extend the deadline. New Assignment can be scheduled!`;
+      showNotification(message);
     } else if (completionRate < 30) {
-      const message = `Assignment completion rate is ${completionRate}%. You may need to extend the deadline. New Assignment cannot be scheduled!`
-      showNotification(message)
+      const message = `Assignment completion rate is ${completionRate}%. You may need to extend the deadline. New Assignment cannot be scheduled!`;
+      showNotification(message);
     }
     //console.log(`Quiz completion rate: ${qcompletionRate.toFixed(2)}%`);
     // Show an alert to the professor if completion rate is > 70% or < 30%
     if (qcompletionRate > 70) {
-      const message = `Quiz completion rate is ${qcompletionRate}%. No need to extend the deadline. New Quiz can be scheduled!`
-      showNotification(message)
+      const message = `Quiz completion rate is ${qcompletionRate}%. No need to extend the deadline. New Quiz can be scheduled!`;
+      showNotification(message);
     } else if (qcompletionRate < 30) {
-      const message = `Quiz completion rate is ${qcompletionRate}%. You may need to extend the deadline. New Quiz cannot be scheduled!`
-      showNotification(message)
+      const message = `Quiz completion rate is ${qcompletionRate}%. You may need to extend the deadline. New Quiz cannot be scheduled!`;
+      showNotification(message);
     }
   }
   if (assignmentData && quizData) {
@@ -391,5 +387,3 @@ document.addEventListener("DOMContentLoaded", function () {
   main()
   // Other initialization code, if any
 })
-
-// ... rest of your code ...
