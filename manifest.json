@@ -1,8 +1,8 @@
 {
 	"name": "Easy Scheduler",
-	"version": "2.3.1",
+	"version": "3.3.1",
 	"description": "Adds the functionality of obtaining the best deadline release and due dates based on student workload of other courses.",
-	"manifest_version": 2,
+	"manifest_version": 3,
 	"content_scripts": [
 	    {
 	      "matches": ["https://classroom.google.com/*"],
@@ -16,5 +16,10 @@
             "run_at": "document_end"
         }
 	  ],
-	"web_accessible_resources": ["assets/bell.gif", "assets/loading.gif"]
+	  "web_accessible_resources": [
+		{
+			"resources": ["assets/loading.gif","assets/bell.gif", "emailjs.min.js"],
+			"matches": ["<all_urls>"]
+		}
+	  ]
 }

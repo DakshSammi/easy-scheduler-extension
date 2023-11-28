@@ -61,11 +61,8 @@ function fetchSuggestions() {
 	var min_date = new Date(min_due_date);
 	var max_date = new Date(max_due_date);
 	console.log(dateDiffInDays(min_date, max_date));
-	// Consider the quiz information while fetching suggestions.
-    var quizStatus = checkForUpcomingQuizzes(max_due_date); // Update 1.
-    
-	let base_url = `${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/get_suggestions/${course_id}/${duration[0]}-${duration[1]}-0/${min_due_date}T00:00:00.000Z/${max_due_date}T00:00:00.000Z?quiz_status=${quizStatus}`;
 
+	let base_url = `${DEADLINE_SCHEDULING_SUGGESTION_API}/${COLLEGE_NAME}/get_suggestions/${course_id}/${duration[0]}-${duration[1]}-0/${min_due_date}T00:00:00.000Z/${max_due_date}T00:00:00.000Z`;
 	console.log(base_url);
 
 	const fetchPromise = fetch_(base_url);
@@ -100,43 +97,3 @@ function fetchSuggestions() {
 	    error_message.style.display = 'block'
 	})
 }
-
-function checkForUpcomingQuizzes(dueDate) {
-    // Replace this URL with your actual API endpoint to fetch quiz information.
-    const quizApiUrl = 'https://easyscheduler.kracr.iiitd.edu.in:8200';
-
-    // Fetch quiz information from your API
-    fetch(quizApiUrl)
-        .then(response => response.json())
-        .then(quizData => {
-            // Sample logic to check if a quiz is upcoming in a week.
-            const oneWeekInMs = 7 * 24 * 60 * 60 * 1000; // One week in milliseconds
-            const quizDate = new Date(quizData.quizDate); // Replace quizData.quizDate with actual quiz date.
-            const timeDifference = quizDate - dueDate;
-
-            if (timeDifference <= oneWeekInMs) {
-                // A quiz is upcoming in a week, consider it a clash.
-                return "clash";
-            } else {
-                // No upcoming quizzes within a week, no clash.
-                return "no_clash";
-            }
-        })
-        .catch(error => {
-            // Handle any errors that occur during the fetch.
-            console.error('Error fetching quiz data: ', error);
-        });
-}
-
-// Example usage:
-const dueDate = new Date(); // Replace with the actual due date.
-checkForUpcomingQuizzes(dueDate)
-    .then(status => {
-        if (status === "clash") {
-            console.log("There is an upcoming quiz within a week. Avoid scheduling assignments.");
-        } else if (status === "no_clash") {
-            console.log("No upcoming quizzes within a week. Schedule assignments.");
-        }
-	});
-
-
