@@ -209,13 +209,13 @@ function checkLowScores(scores, threshold, type) {
 }
 
 function calculateAssignmentCompletionRate(data, assignmentId) {
-  // Assuming your data structure matches the provided schema
+  
   const submissions = data.filter(
     (entry) => entry.assignmentsubmission_id === assignmentId
   )
   const totalAssignments = submissions.length
 
-  // Assuming each student submits only once for an assignment
+  
   const uniqueSubmittedStudents = [
     ...new Set(submissions.map((entry) => entry.student_id)),
   ]
